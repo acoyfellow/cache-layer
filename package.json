@@ -8,11 +8,13 @@
     "dev": "wrangler dev --local --port 8791",
     "check": "tsc --noEmit",
     "test": "bun test",
-    "build": "wrangler deploy --dry-run --outdir dist",
+    "build": "wrangler deploy --dry-run --env production --outdir dist",
     "smoke": "bun scripts/smoke.ts",
+    "bench": "bun scripts/benchmark.ts",
+    "bench:ollama": "bun scripts/benchmark.ts",
     "verify": "bun run check && bun run test && bun run build",
     "record": "bun scripts/record-demo.ts",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy --env production"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260525.0",

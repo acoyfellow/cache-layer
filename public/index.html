@@ -66,6 +66,27 @@
         </div>
       </section>
 
+      <section class="benchmark" aria-label="Local routing benchmark">
+        <div class="benchmark-head">
+          <div>
+            <p class="section-label">Local benchmark</p>
+            <h2>Measured, not promised.</h2>
+          </div>
+          <p class="benchmark-note">20 synthetic public-data routing cases · Apple M4 Pro · Ollama · warm start</p>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Router</th><th>Correct</th><th>Hits recovered</th><th>False hits</th><th>Median</th></tr></thead>
+            <tbody>
+              <tr><td>Deterministic policy</td><td>18 / 20</td><td>7 / 9</td><td>0</td><td>&lt; 0.1 ms</td></tr>
+              <tr><td>Ollama <code>gpt-oss:20b</code></td><td>11 / 20</td><td>0 / 9</td><td>0</td><td>858.6 ms</td></tr>
+              <tr class="best"><td>Ollama <code>qwen3-coder:30b</code></td><td>20 / 20</td><td>9 / 9</td><td>0</td><td>157.2 ms</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="benchmark-footnote">Routing classification only — not a coding-quality or token-savings claim. <a href="https://github.com/acoyfellow/cache-layer/blob/main/docs/benchmarks.md">Method and raw results →</a></p>
+      </section>
+
       <section id="architecture" class="split">
         <div class="split-copy">
           <p class="section-label">Architecture</p>

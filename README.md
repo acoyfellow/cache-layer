@@ -42,8 +42,23 @@ Run the verification loop:
 ```bash
 bun run verify       # typecheck, tests, Worker dry-run build
 bun run smoke        # headless HTTP checks against a local Worker
+bun run bench        # reproducible deterministic routing benchmark
 bun run record       # record a browser proof video to recordings/
 ```
+
+## Local routing benchmark
+
+This repo includes a reproducible, synthetic public-data routing benchmark. It measures whether a router selects approved read-only recipes or escalates correctly; it does **not** claim coding quality or proven token savings.
+
+Measured locally on an Apple M4 Pro with Ollama, after a warm-up request:
+
+| Router | Correct | Recipe hits recovered | False recipe hits | Median latency | p95 latency |
+|---|---:|---:|---:|---:|---:|
+| Deterministic policy/index | 18 / 20 | 7 / 9 | 0 | < 0.1 ms | < 0.4 ms |
+| Ollama `gpt-oss:20b` | 11 / 20 | 0 / 9 | 0 | 858.6 ms | 1,066.3 ms |
+| Ollama `qwen3-coder:30b` | 20 / 20 | 9 / 9 | 0 | 157.2 ms | 183.6 ms |
+
+The useful finding is narrow: `qwen3-coder:30b` handled this small route-selection fixture set well; `gpt-oss:20b` did not recover any cache hits under the same prompt. See [`docs/benchmarks.md`](docs/benchmarks.md) for caveats, raw-result links, and reproduction commands.
 
 ## Deploy your own
 
@@ -169,6 +184,7 @@ Returns the deployed service/version posture.
 - A pi extension that performs the same transparent route before an agent turn.
 - Opt-in recipe persistence and local metrics.
 - Local reduction of large public tool outputs before premium inference.
+- Real session benchmarks measuring upstream token/cost avoidance against a baseline.
 - User-approved proposal flow for turning successful repeated tasks into recipes.
 
 Not next: silent file-edit recipes or pretending a small router should solve novel engineering tasks.

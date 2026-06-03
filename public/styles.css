@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&family=Poppins:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400..700&family=Google+Sans+Mono:wght@400;500;600&display=swap");
 
 :root {
   --primary: #3b82f6;
@@ -41,7 +41,7 @@ body {
   margin: 0;
   background: var(--surface);
   color: var(--text);
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Google Sans Flex", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
 }
@@ -69,7 +69,7 @@ button { cursor: pointer; }
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Google Sans Flex", sans-serif;
   font-weight: 600;
   font-size: 20px;
   letter-spacing: -0.03em;
@@ -90,14 +90,14 @@ main { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-3) var(--space-
   border-radius: 999px;
   color: var(--primary-hover);
   background: var(--primary-soft);
-  font: 600 12px "Roboto", sans-serif;
+  font: 600 12px "Google Sans Flex", sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 h1 {
   margin: var(--space-3) 0 var(--space-3);
   max-width: 840px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Google Sans Flex", sans-serif;
   font-size: clamp(48px, 6.2vw, 72px);
   line-height: 1.08;
   letter-spacing: -0.065em;
@@ -134,7 +134,7 @@ h1 span { color: var(--primary); }
   margin-bottom: var(--space-8);
 }
 .statement article { padding: var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-md); }
-.statement strong { display: block; margin-bottom: var(--space-1); font-family: "Poppins", sans-serif; font-size: 20px; font-weight: 500; letter-spacing: -0.03em; }
+.statement strong { display: block; margin-bottom: var(--space-1); font-family: "Google Sans Flex", sans-serif; font-size: 20px; font-weight: 500; letter-spacing: -0.03em; }
 .statement p { margin: 0; color: var(--text-muted); font-size: 14px; }
 
 .demo { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); margin-bottom: var(--space-10); }
@@ -148,7 +148,7 @@ h1 span { color: var(--primary); }
   border-bottom: 1px solid var(--border);
   background: var(--surface-alt);
 }
-.demo-head h2 { margin: 0; font-family: "Poppins", sans-serif; font-size: 20px; font-weight: 500; letter-spacing: -0.03em; }
+.demo-head h2 { margin: 0; font-family: "Google Sans Flex", sans-serif; font-size: 20px; font-weight: 500; letter-spacing: -0.03em; }
 .demo-head p { margin: 0; color: var(--text-soft); font-size: 13px; }
 .demo-grid { display: grid; grid-template-columns: 1fr 1fr; }
 .ask, .result { padding: var(--space-4); min-height: 392px; }
@@ -169,7 +169,7 @@ textarea {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   background: var(--surface);
-  font-family: "Inconsolata", monospace;
+  font-family: "Google Sans Mono", monospace;
   line-height: 1.5;
 }
 textarea:focus { border-color: var(--primary); outline-color: color-mix(in srgb, var(--primary) 30%, transparent); }
@@ -210,23 +210,38 @@ textarea:focus { border-color: var(--primary); outline-color: color-mix(in srgb,
 .waiting { color: var(--text-muted); background: var(--surface-muted); }
 .hit { color: var(--success); background: var(--success-soft); }
 .escalate { color: var(--danger); background: var(--danger-soft); }
-.proof-step { min-height: 22px; margin: 0 0 var(--space-1); color: var(--primary-hover); font: 500 13px "Inconsolata", monospace; }
-.result h3, .proof-card h2 { margin: 0 0 var(--space-1); font-family: "Poppins", sans-serif; font-weight: 500; font-size: 24px; line-height: 1.3; letter-spacing: -0.04em; }
+.proof-step { min-height: 22px; margin: 0 0 var(--space-1); color: var(--primary-hover); font: 500 13px "Google Sans Mono", monospace; }
+.result h3, .proof-card h2 { margin: 0 0 var(--space-1); font-family: "Google Sans Flex", sans-serif; font-weight: 500; font-size: 24px; line-height: 1.3; letter-spacing: -0.04em; }
 .reason { margin: 0 0 var(--space-3); color: var(--text-muted); font-size: 15px; }
 .evidence { display: grid; gap: 10px; padding-top: var(--space-2); border-top: 1px solid var(--border); }
 .evidence div { display: flex; gap: 10px; font-size: 14px; color: var(--text-muted); }
 .evidence div::before { content: "✓"; color: var(--success); font-weight: 700; }
 .evidence.escalated div::before { content: "→"; color: var(--danger); }
 
+.benchmark { margin-bottom: var(--space-10); padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
+.benchmark-head { display: flex; justify-content: space-between; gap: var(--space-3); align-items: end; margin-bottom: var(--space-3); }
+.benchmark-head h2 { margin: 0; font-family: "Google Sans Flex", sans-serif; font-weight: 500; font-size: 32px; letter-spacing: -0.05em; }
+.benchmark-head .section-label { margin-bottom: var(--space-1); }
+.benchmark-note { max-width: 330px; margin: 0; color: var(--text-soft); font-size: 13px; text-align: right; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+th { padding: 14px var(--space-2); color: var(--text-soft); background: var(--surface-alt); font-weight: 500; white-space: nowrap; }
+td { padding: var(--space-2); border-top: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
+td:first-child { color: var(--text); font-weight: 500; }
+td code { font-family: "Google Sans Mono", ui-monospace, monospace; font-size: 13px; }
+tr.best { background: var(--success-soft); }
+tr.best td:nth-child(2), tr.best td:nth-child(3), tr.best td:nth-child(4) { color: var(--success); font-weight: 500; }
+.benchmark-footnote { margin: var(--space-2) 0 0; color: var(--text-soft); font-size: 13px; }
+.benchmark-footnote a { color: var(--primary-hover); font-weight: 500; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; margin-bottom: var(--space-10); }
 .section-label { color: var(--primary-hover); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 var(--space-2); }
-.split h2, .safety h2 { margin: 0 0 var(--space-2); font-family: "Poppins", sans-serif; font-weight: 500; font-size: 32px; line-height: 1.3; letter-spacing: -0.05em; }
+.split h2, .safety h2 { margin: 0 0 var(--space-2); font-family: "Google Sans Flex", sans-serif; font-weight: 500; font-size: 32px; line-height: 1.3; letter-spacing: -0.05em; }
 .split-copy > p:last-child { margin: 0; color: var(--text-muted); }
-.diagram { margin: 0; padding: var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-muted); font: 15px/2 "Inconsolata", monospace; }
+.diagram { margin: 0; padding: var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-muted); font: 15px/2 "Google Sans Mono", monospace; }
 .safety { margin-bottom: var(--space-8); }
 .safety-grid { margin-top: var(--space-4); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
 .safety-grid div { padding: var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--border); }
-.safety-grid h3 { margin: 0 0 var(--space-1); font-family: "Poppins", sans-serif; font-size: 20px; font-weight: 500; }
+.safety-grid h3 { margin: 0 0 var(--space-1); font-family: "Google Sans Flex", sans-serif; font-size: 20px; font-weight: 500; }
 .safety-grid p { margin: 0; color: var(--text-muted); }
 .allow { background: var(--success-soft); border-color: #bbf7d0 !important; }
 .allow h3 { color: var(--success); }
@@ -238,7 +253,7 @@ footer { border-top: 1px solid var(--border); padding: var(--space-4) var(--spac
 .proof-layout .hero { padding: var(--space-10) 0 var(--space-5); text-align: center; }
 .proof-layout .hero h1, .proof-layout .lede { margin-left: auto; margin-right: auto; }
 .proof-page { margin-bottom: var(--space-8); }
-.proof-head { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); background: var(--surface-alt); color: var(--text-muted); font-family: "Inconsolata", monospace; }
+.proof-head { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); background: var(--surface-alt); color: var(--text-muted); font-family: "Google Sans Mono", monospace; }
 .proof-card { padding: var(--space-4); }
 .proof-card .badge { margin-bottom: var(--space-3); }
 .next-link { margin-top: var(--space-4); display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-2); color: var(--primary-hover); border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 500; }
@@ -253,6 +268,9 @@ footer { border-top: 1px solid var(--border); padding: var(--space-4) var(--spac
   .lede { font-size: 18px; }
   .actions { flex-direction: column; }
   .statement, .demo-grid, .split, .safety-grid { grid-template-columns: 1fr; }
+  .benchmark { padding: var(--space-2); }
+  .benchmark-head { display: block; }
+  .benchmark-note { margin-top: var(--space-2); text-align: left; }
   .ask { border-right: 0; border-bottom: 1px solid var(--border); }
   .split { gap: var(--space-3); }
 }

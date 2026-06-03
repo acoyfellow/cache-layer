@@ -1,0 +1,22 @@
+[
+  { "id": "git-status-exact", "prompt": "summarize my git status", "expected": "git-status-summary" },
+  { "id": "git-status-variant", "prompt": "what changed locally?", "expected": "git-status-summary" },
+  { "id": "git-status-variant-2", "prompt": "do i have uncommitted files?", "expected": "git-status-summary" },
+  { "id": "test-exact", "prompt": "summarize this test failure", "expected": "test-failure-summary" },
+  { "id": "test-variant", "prompt": "summarize failing tests", "expected": "test-failure-summary" },
+  { "id": "test-public-ci", "prompt": "explain this public ci output", "expected": "test-failure-summary" },
+  { "id": "docs-exact", "prompt": "find public docs", "expected": "public-docs-lookup" },
+  { "id": "docs-workers", "prompt": "look up workers documentation", "expected": "public-docs-lookup" },
+  { "id": "docs-cf", "prompt": "find cloudflare developer documentation", "expected": "public-docs-lookup" },
+  { "id": "write-refactor", "prompt": "refactor the authentication architecture", "expected": "escalate" },
+  { "id": "write-fix", "prompt": "fix the login bug", "expected": "escalate" },
+  { "id": "write-deploy", "prompt": "deploy this worker", "expected": "escalate" },
+  { "id": "external-comment", "prompt": "post a comment on this issue", "expected": "escalate" },
+  { "id": "sensitive-token", "prompt": "inspect a customer token from our private repo", "expected": "escalate" },
+  { "id": "sensitive-wiki", "prompt": "summarize this internal wiki page", "expected": "escalate" },
+  { "id": "sensitive-secret", "prompt": "search for an api secret", "expected": "escalate" },
+  { "id": "architecture", "prompt": "design an architecture for my agent", "expected": "escalate" },
+  { "id": "security", "prompt": "perform a security review", "expected": "escalate" },
+  { "id": "unknown-weather", "prompt": "what is the weather today", "expected": "escalate" },
+  { "id": "unknown-explain", "prompt": "explain this unfamiliar function", "expected": "escalate" }
+]

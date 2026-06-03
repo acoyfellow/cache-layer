@@ -3,15 +3,33 @@
   "name": "cache-layer",
   "main": "src/index.ts",
   "compatibility_date": "2026-06-02",
+  "workers_dev": true,
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": ["/api/*", "/health"]
   },
-  "ai": {
-    "binding": "AI"
-  },
   "observability": {
     "enabled": true
+  },
+  "env": {
+    "production": {
+      "name": "cache-layer",
+      "workers_dev": false,
+      "routes": [
+        { "pattern": "cache-layer.coey.dev", "custom_domain": true }
+      ],
+      "assets": {
+        "directory": "./public",
+        "binding": "ASSETS",
+        "run_worker_first": ["/api/*", "/health"]
+      },
+      "ai": {
+        "binding": "AI"
+      },
+      "observability": {
+        "enabled": true
+      }
+    }
   }
 }
