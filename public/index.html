@@ -88,6 +88,21 @@
         <p class="benchmark-footnote">Routing classification only — not a coding-quality or token-savings claim. <a href="https://github.com/acoyfellow/cache-layer/blob/main/docs/benchmarks.md">Method, failures, and raw results →</a></p>
       </section>
 
+      <section class="proof-evidence" aria-label="Pi extension evidence">
+        <div>
+          <p class="section-label">Real pi proof</p>
+          <h2>One actual local turn avoided.</h2>
+          <p>A real pi AgentSession ran the read-only <code>git-status-summary</code> recipe against this public repo and completed without generating an assistant/frontier-model message.</p>
+        </div>
+        <dl>
+          <div><dt>Prompt</dt><dd>summarize my git status</dd></div>
+          <div><dt>Recipe</dt><dd>git-status-summary</dd></div>
+          <div><dt>Frontier messages</dt><dd class="safe">0</dd></div>
+          <div><dt>Local elapsed</dt><dd>305.3 ms</dd></div>
+        </dl>
+        <p class="benchmark-footnote">Narrow execution proof, not a workload-level savings claim. <a href="https://github.com/acoyfellow/cache-layer/blob/main/benchmarks/results/pi-extension-public-repo.json">Raw proof →</a></p>
+      </section>
+
       <section id="architecture" class="split">
         <div class="split-copy">
           <p class="section-label">Architecture</p>

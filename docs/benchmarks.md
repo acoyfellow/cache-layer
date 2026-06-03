@@ -85,18 +85,29 @@ not:
 local model decides whether arbitrary work is safe
 ```
 
+## Real pi recipe-execution proof
+
+A second proof exercises a real pi `AgentSession` with the extension in [`extensions/cache-layer/`](../extensions/cache-layer/). It runs only the implemented and approved `git-status-summary` recipe against this public repository.
+
+| Prompt executed | Recipe | Frontier assistant messages | Local completion | Elapsed time |
+|---|---|---:|---:|---:|
+| `summarize my git status` | `git-status-summary` | 0 | yes | 305.3 ms |
+
+Raw evidence: [`pi-extension-public-repo.json`](../benchmarks/results/pi-extension-public-repo.json).
+
+This proves a real narrow path where pi accepts a prompt and the extension returns an actual repository result without a frontier-model response. Expected-escalation prompts are listed in the fixture but intentionally not executed here: executing them would invoke the configured upstream model and must be part of a controlled paid/token baseline rather than an incidental run.
+
 ## What this does not yet prove
 
-We cannot honestly claim token savings yet. This benchmark does not:
+We cannot honestly claim net token savings yet. Current evidence does not:
 
-- execute a recipe against a real repository;
-- run a premium-model baseline;
-- run pi with and without the cache layer;
-- measure premium input/output tokens avoided;
+- run a premium-model baseline for the same workflows;
+- measure premium input/output tokens avoided across a representative suite;
+- execute multiple useful read-only recipes;
 - measure outcome equivalence or user acceptance;
 - benchmark the deployed Workers AI route.
 
-The next evidence milestone is a real public-repository workflow benchmark comparing ordinary agent runs against cache-assisted runs, with premium token usage and completed-output checks.
+The next evidence milestone is a controlled baseline versus cache-assisted pi run on a public repository, with premium token usage and completed-output checks.
 
 ## Reproduce
 
@@ -111,6 +122,12 @@ Run the deterministic policy benchmark:
 ```bash
 bun scripts/benchmark.ts --runs 5 --shuffle \
   --output benchmarks/results/my-deterministic.json
+```
+
+Run the implemented pi extension recipe proof:
+
+```bash
+bun run bench:pi
 ```
 
 Run an installed Ollama model with the same public fixture set:

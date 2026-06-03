@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { deterministicRoute, routePrompt } from "../src/router";
+import { PublicReadOnlyPolicy } from "../src/policy";
+import { AuthenticationRouter, deterministicRoute, routePrompt } from "../src/router";
 
 describe("deterministicRoute", () => {
   test("hits an approved read-only recipe", () => {
@@ -23,6 +24,26 @@ describe("deterministicRoute", () => {
 
   test("escalates an unmatched task", () => {
     expect(deterministicRoute("tell me something interesting").route).toBe("escalate");
+  });
+});
+
+describe("AuthenticationRouter", () => {
+  test("supports an injectable authorization policy", () => {
+    const router = new AuthenticationRouter({
+      authorize() {
+        return { allowed: false, confidence: 1, reason: "Policy denied this request.", flags: [] };
+      }
+    });
+    const decision = router.authorize("summarize my git status");
+    expect(decision.route).toBe("escalate");
+    expect(decision.reason).toBe("Policy denied this request.");
+  });
+
+  test("preserves categorized policy flags without changing the public flags response", () => {
+    const decision = new AuthenticationRouter(new PublicReadOnlyPolicy()).authorize("refactor the authentication architecture");
+    expect(decision.flags).toContain("refactor");
+    expect(decision.policyFlags).toContainEqual({ category: "write", term: "refactor" });
+    expect(decision.policyFlags).toContainEqual({ category: "judgment", term: "architecture" });
   });
 });
 

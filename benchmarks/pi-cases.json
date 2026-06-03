@@ -1,0 +1,5 @@
+[
+  { "id": "git-status-exact", "prompt": "summarize my git status", "shouldHandleLocally": true },
+  { "id": "architecture-escalates", "prompt": "refactor the authentication architecture", "shouldHandleLocally": false },
+  { "id": "private-context-escalates", "prompt": "inspect a customer token from our private repo", "shouldHandleLocally": false }
+]

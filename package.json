@@ -12,6 +12,7 @@
     "smoke": "bun scripts/smoke.ts",
     "bench": "bun scripts/benchmark.ts",
     "bench:ollama": "bun scripts/benchmark.ts",
+    "bench:pi": "bun scripts/pi-eval.ts",
     "verify": "bun run check && bun run test && bun run build",
     "record": "bun scripts/record-demo.ts",
     "deploy": "wrangler deploy --env production"
@@ -24,5 +25,9 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "^0.78.0",
+    "@earendil-works/pi-tui": "^0.78.0"
   }
 }

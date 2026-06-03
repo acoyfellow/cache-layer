@@ -62,6 +62,32 @@ The evidence is useful precisely because it is not flattering: `qwen3-coder:30b`
 
 This is routing evidence, not proof of coding quality or premium-token savings. See [`docs/benchmarks.md`](docs/benchmarks.md) for method, failure cases, raw results, and reproduction commands.
 
+## Real pi extension proof
+
+The repository also contains a minimal pi extension at [`extensions/cache-layer/`](extensions/cache-layer/) and one executable read-only recipe: `git-status-summary`.
+
+Against this public repository, a real in-memory pi `AgentSession` was prompted with:
+
+```text
+summarize my git status
+```
+
+The extension executed `git status --short --branch`, produced a local result, and the session contained **zero assistant/frontier-model messages**:
+
+| Prompt | Local recipe result | Frontier assistant messages | Elapsed time |
+|---|---:|---:|---:|
+| `summarize my git status` | hit | 0 | 305.3 ms |
+
+Raw proof: [`benchmarks/results/pi-extension-public-repo.json`](benchmarks/results/pi-extension-public-repo.json).
+
+That proves one real narrow avoidance path. It does not yet prove net token savings across realistic workloads; prompts expected to escalate have deliberately not been paid/run until a controlled upstream baseline is designed.
+
+Reproduce it:
+
+```bash
+bun run bench:pi
+```
+
 ## Deploy your own
 
 Click **Deploy to Cloudflare** above, or deploy from a checkout:
@@ -139,15 +165,16 @@ browser
   ▼
 Cloudflare Worker
   ├── static demo UI
-  ├── deterministic safety gate
-  ├── approved read-only recipe index
-  └── Workers AI confirmation for candidate hits
-          │
-          ├── KEEP      → recipe hit shown with evidence
-          └── ESCALATE  → upstream/model handoff recommended
+  └── AuthenticationRouter
+        ├── PublicReadOnlyPolicy     → deterministic authorization boundary
+        ├── ExampleRecipeMatcher     → candidate lookup only
+        └── WorkersAICandidateVerifier (optional veto)
+                │
+                ├── KEEP      → authorized recipe hit shown with evidence
+                └── ESCALATE  → upstream/model handoff recommended
 ```
 
-The deterministic gate rejects obvious writes and sensitive/private contexts *before* the Workers AI confirmation step. A model cannot opt a risky request into a safe recipe.
+The deterministic policy rejects obvious writes and sensitive/private contexts *before* candidate verification or local recipe execution. Matching and Workers AI confirmation never grant authority to a risky request. The same authorization router is reused by the pi recipe executor.
 
 ## API
 

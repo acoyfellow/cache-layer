@@ -2,16 +2,19 @@
 
 ## Request path
 
-`cache-layer` exposes a static UI and three Worker endpoints. The route endpoint evaluates a prompt in this order:
+`cache-layer` exposes a static UI and three Worker endpoints. Authentication/authorization is now split into explicit layers instead of mixing policy, matching, and model confirmation in one function:
 
-1. A deterministic policy gate rejects sensitive, write-capable, destructive, or judgment-heavy requests.
-2. A small public recipe registry selects a candidate read-only workflow by examples.
-3. When a Workers AI binding is available, Workers AI may veto the candidate match but cannot promote an unsafe request.
-4. The UI renders either the approved recipe evidence or an escalation explanation.
+1. `PublicReadOnlyPolicy` is the authorization boundary. It rejects sensitive, write-capable, destructive, or judgment-heavy requests and records categorized policy flags.
+2. `ExampleRecipeMatcher` selects a candidate workflow from the public recipe registry; matching never grants permission by itself.
+3. `AuthenticationRouter` asks the policy to authorize the selected candidate and emits the stable route decision used by the API and pi integration.
+4. `WorkersAICandidateVerifier`, when configured, may veto an already-authorized read-only match but cannot promote a denied request.
+5. `AuthorizedRecipeService` dispatches locally executable recipes only after authorization has succeeded.
+
+All boundaries are injectable interfaces, so additional policy implementations, candidate matchers, verifiers, or executors can be tested independently without weakening the default public/read-only posture.
 
 ## Why Workers AI is behind a deterministic gate
 
-The safety boundary must not depend on an LLM claiming a request is safe. The model only confirms candidate read-only hits already allowed by deterministic policy.
+The safety boundary must not depend on an LLM claiming a request is safe. The model only confirms candidate read-only hits already allowed by deterministic policy. Likewise, recipe execution consumes an authorized decision rather than reimplementing safety checks.
 
 ## Why no D1 yet
 

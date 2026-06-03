@@ -1,3 +1,4 @@
+import { PublicReadOnlyPolicy, normalizePrompt, type PolicyFlag, type RecipeAuthorizationPolicy } from "./policy";
 import { recipes, type Recipe, type Risk } from "./recipes";
 
 export type Decision = {
@@ -6,26 +7,21 @@ export type Decision = {
   confidence: number;
   reason: string;
   flags: string[];
+  policyFlags?: PolicyFlag[];
   engine: "deterministic" | "workers-ai";
 };
 
-const writeTerms = [
-  "write", "edit", "fix", "implement", "refactor", "change", "create", "delete", "remove", "commit", "push", "deploy", "merge", "post", "send"
-];
-const sensitiveTerms = [
-  "secret", "token", "customer", "personal", "pii", "production data", "internal wiki", "private repo", "confidential", "restricted"
-];
-const architectureTerms = ["architecture", "design", "strategy", "security review", "vulnerability", "auth system"];
+export interface RecipeMatcher {
+  match(prompt: string): { recipe?: Recipe; confidence: number };
+}
 
-const clean = (input: string) => input.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
-
-function matchedTerms(text: string, terms: string[]): string[] {
-  return terms.filter((term) => text.includes(term));
+export interface CandidateVerifier {
+  verify(prompt: string, recipe: Recipe): Promise<boolean>;
 }
 
 function score(query: string, example: string): number {
-  const input = clean(query);
-  const candidate = clean(example);
+  const input = normalizePrompt(query);
+  const candidate = normalizePrompt(example);
   if (input === candidate) return 1;
   if (input.includes(candidate) || candidate.includes(input)) return 0.96;
   const inputWords = new Set(input.split(" ").filter(Boolean));
@@ -35,80 +31,84 @@ function score(query: string, example: string): number {
   return overlap / Math.max(candidateWords.size, inputWords.size, 1);
 }
 
-function topRecipe(query: string): { recipe?: Recipe; confidence: number } {
-  let best: Recipe | undefined;
-  let confidence = 0;
-  for (const recipe of recipes) {
-    for (const example of recipe.handles) {
-      const next = score(query, example);
-      if (next > confidence) {
-        best = recipe;
-        confidence = next;
+export class ExampleRecipeMatcher implements RecipeMatcher {
+  constructor(private readonly availableRecipes: Recipe[] = recipes) {}
+
+  match(prompt: string): { recipe?: Recipe; confidence: number } {
+    let best: Recipe | undefined;
+    let confidence = 0;
+    for (const recipe of this.availableRecipes) {
+      for (const example of recipe.handles) {
+        const next = score(prompt, example);
+        if (next > confidence) {
+          best = recipe;
+          confidence = next;
+        }
       }
     }
+    return { recipe: best, confidence };
   }
-  return { recipe: best, confidence };
 }
 
-export function deterministicRoute(prompt: string): Decision {
-  const normalized = clean(prompt);
-  if (!normalized) return { route: "escalate", confidence: 1, reason: "No request provided.", flags: [], engine: "deterministic" };
-
-  const sensitive = matchedTerms(normalized, sensitiveTerms);
-  if (sensitive.length) {
-    return {
-      route: "escalate",
-      confidence: 1,
-      reason: "Sensitive or access-controlled context requires a reviewed upstream path.",
-      flags: sensitive,
-      engine: "deterministic"
-    };
-  }
-
-  const writes = matchedTerms(normalized, writeTerms);
-  const judgment = matchedTerms(normalized, architectureTerms);
-  if (writes.length || judgment.length) {
-    return {
-      route: "escalate",
-      confidence: 0.99,
-      reason: "Novel, write-capable, or judgment-heavy work is outside the read-only cache boundary.",
-      flags: [...writes, ...judgment],
-      engine: "deterministic"
-    };
-  }
-
-  const candidate = topRecipe(normalized);
-  if (candidate.recipe && candidate.recipe.risk === "read_only" && candidate.confidence >= 0.5) {
-    return {
-      route: "recipe_hit",
-      recipe: candidate.recipe,
-      confidence: Math.round(candidate.confidence * 100) / 100,
-      reason: "Matched an approved read-only recipe with inspectable evidence.",
-      flags: [],
-      engine: "deterministic"
-    };
-  }
-
+function toDecision(authorization: ReturnType<RecipeAuthorizationPolicy["authorize"]>, recipe?: Recipe): Decision {
   return {
-    route: "escalate",
-    confidence: 0.91,
-    reason: "No approved read-only recipe matched with sufficient confidence.",
-    flags: [],
+    route: authorization.allowed ? "recipe_hit" : "escalate",
+    recipe: authorization.allowed ? recipe : undefined,
+    confidence: authorization.confidence,
+    reason: authorization.reason,
+    flags: authorization.flags.map((flag) => flag.term),
+    policyFlags: authorization.flags,
     engine: "deterministic"
   };
 }
 
-type WorkersAI = { run(model: string, input: unknown): Promise<unknown> };
+export class AuthenticationRouter {
+  constructor(
+    private readonly policy: RecipeAuthorizationPolicy = new PublicReadOnlyPolicy(),
+    private readonly matcher: RecipeMatcher = new ExampleRecipeMatcher(),
+    private readonly verifier?: CandidateVerifier
+  ) {}
 
+  authorize(prompt: string): Decision {
+    const policyGate = this.policy.authorize(prompt);
+    if (!policyGate.allowed && policyGate.reason !== "No approved read-only recipe matched with sufficient confidence.") {
+      return toDecision(policyGate);
+    }
+
+    const candidate = this.matcher.match(prompt);
+    if (!candidate.recipe || candidate.confidence < 0.5) return toDecision(this.policy.authorize(prompt));
+
+    const authorized = this.policy.authorize(prompt, candidate.recipe);
+    const decision = toDecision(authorized, candidate.recipe);
+    if (decision.route === "recipe_hit") decision.confidence = Math.round(candidate.confidence * 100) / 100;
+    return decision;
+  }
+
+  async route(prompt: string): Promise<Decision> {
+    const guarded = this.authorize(prompt);
+    if (guarded.route === "escalate" || !guarded.recipe || !this.verifier) return guarded;
+    try {
+      if (!(await this.verifier.verify(prompt, guarded.recipe))) {
+        return { route: "escalate", confidence: 0.95, reason: "Workers AI safety check did not confirm a safe recipe hit.", flags: [], policyFlags: [], engine: "workers-ai" };
+      }
+      return { ...guarded, engine: "workers-ai", reason: "Matched an approved read-only recipe; Workers AI confirmed the route." };
+    } catch {
+      return { ...guarded, reason: "Matched an approved read-only recipe. Workers AI was unavailable, so deterministic policy produced this demo route." };
+    }
+  }
+}
+
+type WorkersAI = { run(model: string, input: unknown): Promise<unknown> };
 type AIAnswer = { response?: string };
 
-export async function routePrompt(prompt: string, ai?: WorkersAI): Promise<Decision> {
-  const guarded = deterministicRoute(prompt);
-  if (guarded.route === "escalate" || !ai) return guarded;
+export class WorkersAICandidateVerifier implements CandidateVerifier {
+  constructor(private readonly ai: WorkersAI, private readonly availableRecipes: Recipe[] = recipes) {}
 
-  const allowed = recipes.filter((recipe) => recipe.risk === "read_only").map((recipe) => ({ id: recipe.id, description: recipe.description }));
-  try {
-    const output = (await ai.run("@cf/meta/llama-3.1-8b-instruct", {
+  async verify(prompt: string, recipe: Recipe): Promise<boolean> {
+    const allowed = this.availableRecipes
+      .filter((item) => item.risk === "read_only")
+      .map((item) => ({ id: item.id, description: item.description }));
+    const output = (await this.ai.run("@cf/meta/llama-3.1-8b-instruct", {
       messages: [
         {
           role: "system",
@@ -116,19 +116,25 @@ export async function routePrompt(prompt: string, ai?: WorkersAI): Promise<Decis
         },
         {
           role: "user",
-          content: JSON.stringify({ request: prompt, candidate: guarded.recipe?.id, allowed })
+          content: JSON.stringify({ request: prompt, candidate: recipe.id, allowed })
         }
       ],
       max_tokens: 8
     })) as AIAnswer;
-    const answer = String(output?.response ?? "").toUpperCase();
-    if (!answer.includes("KEEP")) {
-      return { route: "escalate", confidence: 0.95, reason: "Workers AI safety check did not confirm a safe recipe hit.", flags: [], engine: "workers-ai" };
-    }
-    return { ...guarded, engine: "workers-ai", reason: "Matched an approved read-only recipe; Workers AI confirmed the route." };
-  } catch {
-    return { ...guarded, reason: "Matched an approved read-only recipe. Workers AI was unavailable, so deterministic policy produced this demo route." };
+    return String(output?.response ?? "").toUpperCase().includes("KEEP");
   }
+}
+
+const deterministicRouter = new AuthenticationRouter();
+
+export function deterministicRoute(prompt: string): Decision {
+  return deterministicRouter.authorize(prompt);
+}
+
+export async function routePrompt(prompt: string, ai?: WorkersAI): Promise<Decision> {
+  return ai
+    ? new AuthenticationRouter(new PublicReadOnlyPolicy(), new ExampleRecipeMatcher(), new WorkersAICandidateVerifier(ai)).route(prompt)
+    : deterministicRouter.route(prompt);
 }
 
 export function riskLabel(risk: Risk): string {

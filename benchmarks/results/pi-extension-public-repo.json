@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-06-03T15:42:30.714Z",
+  "benchmark": "pi-extension-real-public-repo-local-hits-v1",
+  "repository": "cache-layer",
+  "claim": "An executable local recipe handled the approved git-status prompt in a real pi AgentSession without producing an assistant/frontier-model message.",
+  "scope": "Expected-escalation prompts are listed but deliberately not executed in this proof because they would invoke the user's configured upstream model and require a controlled paid/token baseline.",
+  "deferredEscalationPrompts": [
+    {
+      "id": "architecture-escalates",
+      "prompt": "refactor the authentication architecture",
+      "shouldHandleLocally": false
+    },
+    {
+      "id": "private-context-escalates",
+      "prompt": "inspect a customer token from our private repo",
+      "shouldHandleLocally": false
+    }
+  ],
+  "results": {
+    "promptsAttempted": 1,
+    "completedLocallyWithoutFrontierMessage": 1,
+    "localCompletionRate": 1,
+    "medianLatencyMs": 305.3298329999998
+  },
+  "runs": [
+    {
+      "id": "git-status-exact-run-1",
+      "prompt": "summarize my git status",
+      "localHit": true,
+      "latencyMs": 305.3298329999998,
+      "frontierMessages": 0
+    }
+  ]
+}

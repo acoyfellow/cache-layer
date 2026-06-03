@@ -236,6 +236,14 @@ td code { font-family: "Google Sans Mono", ui-monospace, monospace; font-size: 1
 .benchmark-callout strong { color: var(--warning); }
 .benchmark-footnote { margin: var(--space-2) 0 0; color: var(--text-soft); font-size: 13px; }
 .benchmark-footnote a { color: var(--primary-hover); font-weight: 500; }
+.proof-evidence { margin-bottom: var(--space-10); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--primary-soft); border: 1px solid #dbeafe; }
+.proof-evidence h2 { margin: 0 0 var(--space-1); font-family: "Google Sans Flex", sans-serif; font-size: 32px; font-weight: 500; letter-spacing: -.05em; }
+.proof-evidence > div > p:last-child { margin: 0 0 var(--space-3); max-width: 700px; color: var(--text-muted); }
+.proof-evidence code, .proof-evidence dd { font-family: "Google Sans Mono", ui-monospace, monospace; }
+.proof-evidence dl { margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-1); }
+.proof-evidence dl div { padding: var(--space-2); background: var(--surface); border: 1px solid #dbeafe; border-radius: var(--radius-sm); }
+.proof-evidence dt { margin-bottom: 6px; color: var(--text-soft); font-size: 12px; }
+.proof-evidence dd { margin: 0; color: var(--text); font-size: 14px; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; margin-bottom: var(--space-10); }
 .section-label { color: var(--primary-hover); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 var(--space-2); }
 .split h2, .safety h2 { margin: 0 0 var(--space-2); font-family: "Google Sans Flex", sans-serif; font-weight: 500; font-size: 32px; line-height: 1.3; letter-spacing: -0.05em; }
@@ -274,6 +282,8 @@ footer { border-top: 1px solid var(--border); padding: var(--space-4) var(--spac
   .benchmark { padding: var(--space-2); }
   .benchmark-head { display: block; }
   .benchmark-note { margin-top: var(--space-2); text-align: left; }
+  .proof-evidence { padding: var(--space-2); }
+  .proof-evidence dl { grid-template-columns: 1fr; }
   .ask { border-right: 0; border-bottom: 1px solid var(--border); }
   .split { gap: var(--space-3); }
 }
