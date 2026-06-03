@@ -229,8 +229,11 @@ th { padding: 14px var(--space-2); color: var(--text-soft); background: var(--su
 td { padding: var(--space-2); border-top: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
 td:first-child { color: var(--text); font-weight: 500; }
 td code { font-family: "Google Sans Mono", ui-monospace, monospace; font-size: 13px; }
-tr.best { background: var(--success-soft); }
-tr.best td:nth-child(2), tr.best td:nth-child(3), tr.best td:nth-child(4) { color: var(--success); font-weight: 500; }
+.safe { color: var(--success); font-weight: 500; }
+.warning-result { background: var(--warning-soft); }
+.unsafe { color: var(--danger); font-weight: 700; }
+.benchmark-callout { margin: var(--space-2) 0 0; padding: var(--space-2); color: var(--text-muted); background: var(--warning-soft); border-radius: var(--radius-sm); font-size: 14px; }
+.benchmark-callout strong { color: var(--warning); }
 .benchmark-footnote { margin: var(--space-2) 0 0; color: var(--text-soft); font-size: 13px; }
 .benchmark-footnote a { color: var(--primary-hover); font-weight: 500; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; margin-bottom: var(--space-10); }

@@ -48,17 +48,19 @@ bun run record       # record a browser proof video to recordings/
 
 ## Local routing benchmark
 
-This repo includes a reproducible, synthetic public-data routing benchmark. It measures whether a router selects approved read-only recipes or escalates correctly; it does **not** claim coding quality or proven token savings.
+This repo includes a reproducible synthetic benchmark for a narrow but important question: can a router recover approved read-only recipe hits **without** incorrectly handling work that must escalate?
 
-Measured locally on an Apple M4 Pro with Ollama, after a warm-up request:
+Measured locally on an Apple M4 Pro with Ollama. Local models ran three shuffled repetitions after warm-up (`138` decisions each); the deterministic gate ran five repetitions (`230` decisions).
 
-| Router | Correct | Recipe hits recovered | False recipe hits | Median latency | p95 latency |
+| Router | Correct | Approved hits recovered | Unsafe false hits | Median latency | p95 latency |
 |---|---:|---:|---:|---:|---:|
-| Deterministic policy/index | 18 / 20 | 7 / 9 | 0 | < 0.1 ms | < 0.4 ms |
-| Ollama `gpt-oss:20b` | 11 / 20 | 0 / 9 | 0 | 858.6 ms | 1,066.3 ms |
-| Ollama `qwen3-coder:30b` | 20 / 20 | 9 / 9 | 0 | 157.2 ms | 183.6 ms |
+| Deterministic policy/index | 175 / 230 (76.1%) | 35 / 90 (38.9%) | 0 / 140 | < 0.1 ms | < 0.1 ms |
+| Ollama `gpt-oss:20b` | 84 / 138 (60.9%) | 0 / 54 (0.0%) | 0 / 84 | 1,254.5 ms | 2,025.9 ms |
+| Ollama `qwen3-coder:30b` | 132 / 138 (95.7%) | 54 / 54 (100.0%) | 6 / 84 | 158.8 ms | 213.0 ms |
 
-The useful finding is narrow: `qwen3-coder:30b` handled this small route-selection fixture set well; `gpt-oss:20b` did not recover any cache hits under the same prompt. See [`docs/benchmarks.md`](docs/benchmarks.md) for caveats, raw-result links, and reproduction commands.
+The evidence is useful precisely because it is not flattering: `qwen3-coder:30b` recovered intended hits, but also produced unsafe false hits on novel/unbounded requests. A local model therefore cannot be the safety boundary. The architecture must keep deterministic policy in front of semantic routing.
+
+This is routing evidence, not proof of coding quality or premium-token savings. See [`docs/benchmarks.md`](docs/benchmarks.md) for method, failure cases, raw results, and reproduction commands.
 
 ## Deploy your own
 

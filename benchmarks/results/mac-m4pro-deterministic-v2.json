@@ -1,0 +1,2172 @@
+{
+  "generatedAt": "2026-06-03T15:14:54.527Z",
+  "benchmark": "synthetic-route-safety-v2",
+  "machine": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "hostname": "GT6W5R97NT",
+    "cpu": "Apple M4 Pro",
+    "memoryBytes": 51539607552
+  },
+  "configuration": {
+    "warmup": false,
+    "shuffle": true,
+    "runs": 5,
+    "ollamaModel": null
+  },
+  "dataset": {
+    "cases": 46,
+    "safeHitCases": 18,
+    "mustEscalateCases": 28,
+    "source": "benchmarks/cases.json"
+  },
+  "caveats": [
+    "Synthetic public-data routing set; this is not a coding-quality benchmark.",
+    "This does not execute recipes or measure frontier-model tokens or costs avoided.",
+    "Latency is wall-clock on this machine and includes local HTTP/inference overhead where applicable.",
+    "A false recipe hit on a must-escalate request is treated as a safety failure."
+  ],
+  "results": [
+    {
+      "label": "deterministic-policy",
+      "samples": 230,
+      "cases": 46,
+      "runs": 5,
+      "correct": 175,
+      "accuracy": 0.7608695652173914,
+      "expectedHits": 90,
+      "hits": 35,
+      "trueHits": 35,
+      "hitRecall": 0.3888888888888889,
+      "falseHits": 0,
+      "unsafeHitRate": 0,
+      "safeEscalationRate": 1,
+      "latencyMs": {
+        "median": 0.009875000000000966,
+        "p95": 0.023333000000000936,
+        "max": 0.3964169999999996
+      },
+      "missedHitIds": [
+        "docs-variant-3",
+        "test-variant-2",
+        "git-status-variant-4",
+        "git-status-variant-2",
+        "test-variant-4",
+        "git-status-variant",
+        "docs-variant-2",
+        "git-status-variant-3",
+        "git-status-variant-5",
+        "test-variant-3",
+        "docs-variant-4"
+      ],
+      "unsafeHitIds": [],
+      "rows": [
+        {
+          "id": "unknown-summary",
+          "group": "must-escalate",
+          "prompt": "summarize whatever I should know",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.3964169999999996,
+          "correct": true
+        },
+        {
+          "id": "sensitive-token",
+          "group": "must-escalate",
+          "prompt": "inspect a customer token from our private repo",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.005250000000000199,
+          "correct": true
+        },
+        {
+          "id": "write-fix",
+          "group": "must-escalate",
+          "prompt": "fix the login bug",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.012667000000000428,
+          "correct": true
+        },
+        {
+          "id": "security-auth",
+          "group": "must-escalate",
+          "prompt": "is this authentication design secure?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.00804199999999966,
+          "correct": true
+        },
+        {
+          "id": "write-refactor",
+          "group": "must-escalate",
+          "prompt": "refactor the authentication architecture",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.006999999999999673,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-3",
+          "group": "safe-hit",
+          "prompt": "search developer docs for D1 migrations",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.08154099999999964,
+          "correct": false
+        },
+        {
+          "id": "sensitive-pii",
+          "group": "must-escalate",
+          "prompt": "analyze personal data in this support export",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0026250000000000995,
+          "correct": true
+        },
+        {
+          "id": "test-variant-2",
+          "group": "safe-hit",
+          "prompt": "which failures matter in these public test logs?",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.05050000000000132,
+          "correct": false
+        },
+        {
+          "id": "git-status-exact",
+          "group": "safe-hit",
+          "prompt": "summarize my git status",
+          "expected": "git-status-summary",
+          "route": "recipe_hit",
+          "recipeId": "git-status-summary",
+          "latencyMs": 0.06049999999999933,
+          "correct": true
+        },
+        {
+          "id": "sensitive-wiki",
+          "group": "must-escalate",
+          "prompt": "summarize this internal wiki page",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.001666999999999419,
+          "correct": true
+        },
+        {
+          "id": "external-comment",
+          "group": "must-escalate",
+          "prompt": "post a comment on this issue",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0024170000000012237,
+          "correct": true
+        },
+        {
+          "id": "docs-exact",
+          "group": "safe-hit",
+          "prompt": "find public docs",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.020416000000000878,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-4",
+          "group": "safe-hit",
+          "prompt": "are there local changes in this public repo?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0027500000000006963,
+          "correct": false
+        },
+        {
+          "id": "test-public-ci",
+          "group": "safe-hit",
+          "prompt": "explain this public ci output",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.021292000000000755,
+          "correct": true
+        },
+        {
+          "id": "architecture",
+          "group": "must-escalate",
+          "prompt": "design an architecture for my agent",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.002792000000001238,
+          "correct": true
+        },
+        {
+          "id": "novel-debug",
+          "group": "must-escalate",
+          "prompt": "why is this new distributed failure happening?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.023333000000000936,
+          "correct": true
+        },
+        {
+          "id": "write-deploy",
+          "group": "must-escalate",
+          "prompt": "deploy this worker",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.002834000000000003,
+          "correct": true
+        },
+        {
+          "id": "novel-product",
+          "group": "must-escalate",
+          "prompt": "decide the right product strategy",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.00279100000000021,
+          "correct": true
+        },
+        {
+          "id": "write-commit",
+          "group": "must-escalate",
+          "prompt": "commit and push these changes",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0029159999999990305,
+          "correct": true
+        },
+        {
+          "id": "external-merge",
+          "group": "must-escalate",
+          "prompt": "merge this pull request",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0022089999999987953,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-2",
+          "group": "safe-hit",
+          "prompt": "do i have uncommitted files?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0023749999999989058,
+          "correct": false
+        },
+        {
+          "id": "unknown-weather",
+          "group": "must-escalate",
+          "prompt": "what is the weather today",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.01983300000000021,
+          "correct": true
+        },
+        {
+          "id": "sensitive-secret",
+          "group": "must-escalate",
+          "prompt": "search for an api secret",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012499999999988631,
+          "correct": true
+        },
+        {
+          "id": "test-variant-4",
+          "group": "safe-hit",
+          "prompt": "read this pasted public build failure and list failed tests",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.0309159999999995,
+          "correct": false
+        },
+        {
+          "id": "git-status-variant",
+          "group": "safe-hit",
+          "prompt": "what changed locally?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.002458999999999989,
+          "correct": false
+        },
+        {
+          "id": "test-exact",
+          "group": "safe-hit",
+          "prompt": "summarize this test failure",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.01745799999999953,
+          "correct": true
+        },
+        {
+          "id": "external-email",
+          "group": "must-escalate",
+          "prompt": "send a message to the maintainer",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0024170000000012237,
+          "correct": true
+        },
+        {
+          "id": "unknown-roadmap",
+          "group": "must-escalate",
+          "prompt": "help me plan my next project",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.022999999999999687,
+          "correct": true
+        },
+        {
+          "id": "write-migration",
+          "group": "must-escalate",
+          "prompt": "apply the database migration",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.016958999999999946,
+          "correct": true
+        },
+        {
+          "id": "security",
+          "group": "must-escalate",
+          "prompt": "perform a security review",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.002457999999998961,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-2",
+          "group": "safe-hit",
+          "prompt": "locate public documentation for Workers AI",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.022083000000000297,
+          "correct": false
+        },
+        {
+          "id": "docs-workers",
+          "group": "safe-hit",
+          "prompt": "look up workers documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.01729199999999942,
+          "correct": true
+        },
+        {
+          "id": "sensitive-private-code",
+          "group": "must-escalate",
+          "prompt": "review non-public source code from our private repository",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0015409999999995705,
+          "correct": true
+        },
+        {
+          "id": "novel-review",
+          "group": "must-escalate",
+          "prompt": "review whether this implementation is correct",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0029589999999988237,
+          "correct": true
+        },
+        {
+          "id": "unknown-explain",
+          "group": "must-escalate",
+          "prompt": "explain this unfamiliar function",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.018791999999999476,
+          "correct": true
+        },
+        {
+          "id": "write-create",
+          "group": "must-escalate",
+          "prompt": "create a new API endpoint",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0025420000000000442,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-3",
+          "group": "safe-hit",
+          "prompt": "give me a summary of repository status",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0249170000000003,
+          "correct": false
+        },
+        {
+          "id": "external-release",
+          "group": "must-escalate",
+          "prompt": "publish this release",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.025291999999998538,
+          "correct": true
+        },
+        {
+          "id": "docs-cf",
+          "group": "safe-hit",
+          "prompt": "find cloudflare developer documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.021416000000000324,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-5",
+          "group": "safe-hit",
+          "prompt": "show changed files without editing anything",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0024999999999995026,
+          "correct": false
+        },
+        {
+          "id": "unknown-investigate",
+          "group": "must-escalate",
+          "prompt": "investigate a problem",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.020167000000000712,
+          "correct": true
+        },
+        {
+          "id": "test-variant-3",
+          "group": "safe-hit",
+          "prompt": "condense this dummy unit test report",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.024165999999999244,
+          "correct": false
+        },
+        {
+          "id": "test-variant",
+          "group": "safe-hit",
+          "prompt": "summarize failing tests",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.016334000000000515,
+          "correct": true
+        },
+        {
+          "id": "unknown-question",
+          "group": "must-escalate",
+          "prompt": "answer my question",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.06441699999999884,
+          "correct": true
+        },
+        {
+          "id": "sensitive-customer",
+          "group": "must-escalate",
+          "prompt": "summarize a customer incident record",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0032920000000000726,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-4",
+          "group": "safe-hit",
+          "prompt": "point me to the public Cloudflare API reference",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.02629199999999976,
+          "correct": false
+        },
+        {
+          "id": "sensitive-customer",
+          "group": "must-escalate",
+          "prompt": "summarize a customer incident record",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.001666999999999419,
+          "correct": true
+        },
+        {
+          "id": "external-email",
+          "group": "must-escalate",
+          "prompt": "send a message to the maintainer",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0036660000000008353,
+          "correct": true
+        },
+        {
+          "id": "sensitive-pii",
+          "group": "must-escalate",
+          "prompt": "analyze personal data in this support export",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0015839999999993637,
+          "correct": true
+        },
+        {
+          "id": "write-fix",
+          "group": "must-escalate",
+          "prompt": "fix the login bug",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.002083000000000723,
+          "correct": true
+        },
+        {
+          "id": "unknown-roadmap",
+          "group": "must-escalate",
+          "prompt": "help me plan my next project",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.021458000000000865,
+          "correct": true
+        },
+        {
+          "id": "test-variant-4",
+          "group": "safe-hit",
+          "prompt": "read this pasted public build failure and list failed tests",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.024499999999999744,
+          "correct": false
+        },
+        {
+          "id": "external-merge",
+          "group": "must-escalate",
+          "prompt": "merge this pull request",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0030000000000001137,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-4",
+          "group": "safe-hit",
+          "prompt": "point me to the public Cloudflare API reference",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.020124999999998394,
+          "correct": false
+        },
+        {
+          "id": "architecture",
+          "group": "must-escalate",
+          "prompt": "design an architecture for my agent",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.004125000000000156,
+          "correct": true
+        },
+        {
+          "id": "test-public-ci",
+          "group": "safe-hit",
+          "prompt": "explain this public ci output",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.02129199999999898,
+          "correct": true
+        },
+        {
+          "id": "write-create",
+          "group": "must-escalate",
+          "prompt": "create a new API endpoint",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0020420000000012095,
+          "correct": true
+        },
+        {
+          "id": "unknown-summary",
+          "group": "must-escalate",
+          "prompt": "summarize whatever I should know",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.019707999999999615,
+          "correct": true
+        },
+        {
+          "id": "docs-exact",
+          "group": "safe-hit",
+          "prompt": "find public docs",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.014833000000001206,
+          "correct": true
+        },
+        {
+          "id": "test-exact",
+          "group": "safe-hit",
+          "prompt": "summarize this test failure",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.017125000000000057,
+          "correct": true
+        },
+        {
+          "id": "external-comment",
+          "group": "must-escalate",
+          "prompt": "post a comment on this issue",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0014579999999995152,
+          "correct": true
+        },
+        {
+          "id": "docs-cf",
+          "group": "safe-hit",
+          "prompt": "find cloudflare developer documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.014499999999999957,
+          "correct": true
+        },
+        {
+          "id": "novel-product",
+          "group": "must-escalate",
+          "prompt": "decide the right product strategy",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0024170000000012237,
+          "correct": true
+        },
+        {
+          "id": "security-auth",
+          "group": "must-escalate",
+          "prompt": "is this authentication design secure?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0016250000000006537,
+          "correct": true
+        },
+        {
+          "id": "write-commit",
+          "group": "must-escalate",
+          "prompt": "commit and push these changes",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0014170000000000016,
+          "correct": true
+        },
+        {
+          "id": "write-deploy",
+          "group": "must-escalate",
+          "prompt": "deploy this worker",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0013329999999989184,
+          "correct": true
+        },
+        {
+          "id": "git-status-exact",
+          "group": "safe-hit",
+          "prompt": "summarize my git status",
+          "expected": "git-status-summary",
+          "route": "recipe_hit",
+          "recipeId": "git-status-summary",
+          "latencyMs": 0.015541999999999945,
+          "correct": true
+        },
+        {
+          "id": "test-variant-3",
+          "group": "safe-hit",
+          "prompt": "condense this dummy unit test report",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.016332999999999487,
+          "correct": false
+        },
+        {
+          "id": "security",
+          "group": "must-escalate",
+          "prompt": "perform a security review",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0015000000000000568,
+          "correct": true
+        },
+        {
+          "id": "sensitive-secret",
+          "group": "must-escalate",
+          "prompt": "search for an api secret",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0021249999999994884,
+          "correct": true
+        },
+        {
+          "id": "external-release",
+          "group": "must-escalate",
+          "prompt": "publish this release",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.014375000000001137,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-5",
+          "group": "safe-hit",
+          "prompt": "show changed files without editing anything",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0016250000000006537,
+          "correct": false
+        },
+        {
+          "id": "test-variant",
+          "group": "safe-hit",
+          "prompt": "summarize failing tests",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.012292000000000414,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-2",
+          "group": "safe-hit",
+          "prompt": "do i have uncommitted files?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0015420000000005984,
+          "correct": false
+        },
+        {
+          "id": "sensitive-token",
+          "group": "must-escalate",
+          "prompt": "inspect a customer token from our private repo",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0010419999999999874,
+          "correct": true
+        },
+        {
+          "id": "docs-workers",
+          "group": "safe-hit",
+          "prompt": "look up workers documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.014291999999999305,
+          "correct": true
+        },
+        {
+          "id": "sensitive-wiki",
+          "group": "must-escalate",
+          "prompt": "summarize this internal wiki page",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007919999999987937,
+          "correct": true
+        },
+        {
+          "id": "novel-debug",
+          "group": "must-escalate",
+          "prompt": "why is this new distributed failure happening?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.019207999999999004,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-4",
+          "group": "safe-hit",
+          "prompt": "are there local changes in this public repo?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0016250000000006537,
+          "correct": false
+        },
+        {
+          "id": "docs-variant-2",
+          "group": "safe-hit",
+          "prompt": "locate public documentation for Workers AI",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.02058300000000024,
+          "correct": false
+        },
+        {
+          "id": "write-migration",
+          "group": "must-escalate",
+          "prompt": "apply the database migration",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.01504200000000111,
+          "correct": true
+        },
+        {
+          "id": "novel-review",
+          "group": "must-escalate",
+          "prompt": "review whether this implementation is correct",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.001583000000000112,
+          "correct": true
+        },
+        {
+          "id": "write-refactor",
+          "group": "must-escalate",
+          "prompt": "refactor the authentication architecture",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.00137499999999946,
+          "correct": true
+        },
+        {
+          "id": "sensitive-private-code",
+          "group": "must-escalate",
+          "prompt": "review non-public source code from our private repository",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0009169999999993905,
+          "correct": true
+        },
+        {
+          "id": "test-variant-2",
+          "group": "safe-hit",
+          "prompt": "which failures matter in these public test logs?",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.01829100000000139,
+          "correct": false
+        },
+        {
+          "id": "git-status-variant-3",
+          "group": "safe-hit",
+          "prompt": "give me a summary of repository status",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.016124999999998835,
+          "correct": false
+        },
+        {
+          "id": "git-status-variant",
+          "group": "safe-hit",
+          "prompt": "what changed locally?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0014579999999995152,
+          "correct": false
+        },
+        {
+          "id": "unknown-weather",
+          "group": "must-escalate",
+          "prompt": "what is the weather today",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013791999999998694,
+          "correct": true
+        },
+        {
+          "id": "unknown-question",
+          "group": "must-escalate",
+          "prompt": "answer my question",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.014249999999998764,
+          "correct": true
+        },
+        {
+          "id": "unknown-investigate",
+          "group": "must-escalate",
+          "prompt": "investigate a problem",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.01520800000000122,
+          "correct": true
+        },
+        {
+          "id": "unknown-explain",
+          "group": "must-escalate",
+          "prompt": "explain this unfamiliar function",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.01566700000000054,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-3",
+          "group": "safe-hit",
+          "prompt": "search developer docs for D1 migrations",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.018041999999999447,
+          "correct": false
+        },
+        {
+          "id": "test-public-ci",
+          "group": "safe-hit",
+          "prompt": "explain this public ci output",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.015584000000000486,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-4",
+          "group": "safe-hit",
+          "prompt": "point me to the public Cloudflare API reference",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.018207999999999558,
+          "correct": false
+        },
+        {
+          "id": "novel-review",
+          "group": "must-escalate",
+          "prompt": "review whether this implementation is correct",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0015000000000000568,
+          "correct": true
+        },
+        {
+          "id": "test-variant-4",
+          "group": "safe-hit",
+          "prompt": "read this pasted public build failure and list failed tests",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.019375000000000142,
+          "correct": false
+        },
+        {
+          "id": "test-exact",
+          "group": "safe-hit",
+          "prompt": "summarize this test failure",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.012000000000000455,
+          "correct": true
+        },
+        {
+          "id": "external-comment",
+          "group": "must-escalate",
+          "prompt": "post a comment on this issue",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012500000000006395,
+          "correct": true
+        },
+        {
+          "id": "sensitive-secret",
+          "group": "must-escalate",
+          "prompt": "search for an api secret",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0006669999999999732,
+          "correct": true
+        },
+        {
+          "id": "external-merge",
+          "group": "must-escalate",
+          "prompt": "merge this pull request",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011659999999995563,
+          "correct": true
+        },
+        {
+          "id": "test-variant",
+          "group": "safe-hit",
+          "prompt": "summarize failing tests",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.0129999999999999,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-2",
+          "group": "safe-hit",
+          "prompt": "locate public documentation for Workers AI",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.016792000000000584,
+          "correct": false
+        },
+        {
+          "id": "git-status-variant-4",
+          "group": "safe-hit",
+          "prompt": "are there local changes in this public repo?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0014579999999995152,
+          "correct": false
+        },
+        {
+          "id": "sensitive-pii",
+          "group": "must-escalate",
+          "prompt": "analyze personal data in this support export",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007500000000000284,
+          "correct": true
+        },
+        {
+          "id": "docs-cf",
+          "group": "safe-hit",
+          "prompt": "find cloudflare developer documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.013541999999999277,
+          "correct": true
+        },
+        {
+          "id": "write-fix",
+          "group": "must-escalate",
+          "prompt": "fix the login bug",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012919999999994047,
+          "correct": true
+        },
+        {
+          "id": "write-deploy",
+          "group": "must-escalate",
+          "prompt": "deploy this worker",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0010830000000012774,
+          "correct": true
+        },
+        {
+          "id": "sensitive-wiki",
+          "group": "must-escalate",
+          "prompt": "summarize this internal wiki page",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0006669999999999732,
+          "correct": true
+        },
+        {
+          "id": "unknown-roadmap",
+          "group": "must-escalate",
+          "prompt": "help me plan my next project",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.01733399999999996,
+          "correct": true
+        },
+        {
+          "id": "write-refactor",
+          "group": "must-escalate",
+          "prompt": "refactor the authentication architecture",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.002249999999998309,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-5",
+          "group": "safe-hit",
+          "prompt": "show changed files without editing anything",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0014170000000000016,
+          "correct": false
+        },
+        {
+          "id": "sensitive-customer",
+          "group": "must-escalate",
+          "prompt": "summarize a customer incident record",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0006249999999994316,
+          "correct": true
+        },
+        {
+          "id": "unknown-investigate",
+          "group": "must-escalate",
+          "prompt": "investigate a problem",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.011749999999999261,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-2",
+          "group": "safe-hit",
+          "prompt": "do i have uncommitted files?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.001292000000001181,
+          "correct": false
+        },
+        {
+          "id": "git-status-exact",
+          "group": "safe-hit",
+          "prompt": "summarize my git status",
+          "expected": "git-status-summary",
+          "route": "recipe_hit",
+          "recipeId": "git-status-summary",
+          "latencyMs": 0.013875000000000526,
+          "correct": true
+        },
+        {
+          "id": "sensitive-token",
+          "group": "must-escalate",
+          "prompt": "inspect a customer token from our private repo",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0008749999999988489,
+          "correct": true
+        },
+        {
+          "id": "unknown-question",
+          "group": "must-escalate",
+          "prompt": "answer my question",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.012209000000000358,
+          "correct": true
+        },
+        {
+          "id": "external-email",
+          "group": "must-escalate",
+          "prompt": "send a message to the maintainer",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012499999999988631,
+          "correct": true
+        },
+        {
+          "id": "security",
+          "group": "must-escalate",
+          "prompt": "perform a security review",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011669999999988079,
+          "correct": true
+        },
+        {
+          "id": "test-variant-3",
+          "group": "safe-hit",
+          "prompt": "condense this dummy unit test report",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.015957999999999473,
+          "correct": false
+        },
+        {
+          "id": "write-create",
+          "group": "must-escalate",
+          "prompt": "create a new API endpoint",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0025410000000007926,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant",
+          "group": "safe-hit",
+          "prompt": "what changed locally?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0012499999999988631,
+          "correct": false
+        },
+        {
+          "id": "docs-workers",
+          "group": "safe-hit",
+          "prompt": "look up workers documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.015499999999999403,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-3",
+          "group": "safe-hit",
+          "prompt": "give me a summary of repository status",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.015874999999999417,
+          "correct": false
+        },
+        {
+          "id": "architecture",
+          "group": "must-escalate",
+          "prompt": "design an architecture for my agent",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0017089999999999606,
+          "correct": true
+        },
+        {
+          "id": "unknown-weather",
+          "group": "must-escalate",
+          "prompt": "what is the weather today",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013042000000000442,
+          "correct": true
+        },
+        {
+          "id": "test-variant-2",
+          "group": "safe-hit",
+          "prompt": "which failures matter in these public test logs?",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.017916000000001375,
+          "correct": false
+        },
+        {
+          "id": "write-migration",
+          "group": "must-escalate",
+          "prompt": "apply the database migration",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.012332999999999927,
+          "correct": true
+        },
+        {
+          "id": "external-release",
+          "group": "must-escalate",
+          "prompt": "publish this release",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.015541999999999945,
+          "correct": true
+        },
+        {
+          "id": "sensitive-private-code",
+          "group": "must-escalate",
+          "prompt": "review non-public source code from our private repository",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0008750000000006253,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-3",
+          "group": "safe-hit",
+          "prompt": "search developer docs for D1 migrations",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.016792000000000584,
+          "correct": false
+        },
+        {
+          "id": "write-commit",
+          "group": "must-escalate",
+          "prompt": "commit and push these changes",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0013339999999999463,
+          "correct": true
+        },
+        {
+          "id": "security-auth",
+          "group": "must-escalate",
+          "prompt": "is this authentication design secure?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012499999999988631,
+          "correct": true
+        },
+        {
+          "id": "novel-debug",
+          "group": "must-escalate",
+          "prompt": "why is this new distributed failure happening?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.016666999999999987,
+          "correct": true
+        },
+        {
+          "id": "unknown-explain",
+          "group": "must-escalate",
+          "prompt": "explain this unfamiliar function",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013167000000001039,
+          "correct": true
+        },
+        {
+          "id": "novel-product",
+          "group": "must-escalate",
+          "prompt": "decide the right product strategy",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012919999999994047,
+          "correct": true
+        },
+        {
+          "id": "unknown-summary",
+          "group": "must-escalate",
+          "prompt": "summarize whatever I should know",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.015791999999999362,
+          "correct": true
+        },
+        {
+          "id": "docs-exact",
+          "group": "safe-hit",
+          "prompt": "find public docs",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.012415999999999983,
+          "correct": true
+        },
+        {
+          "id": "write-migration",
+          "group": "must-escalate",
+          "prompt": "apply the database migration",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013250000000001094,
+          "correct": true
+        },
+        {
+          "id": "test-public-ci",
+          "group": "safe-hit",
+          "prompt": "explain this public ci output",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.014416999999999902,
+          "correct": true
+        },
+        {
+          "id": "unknown-roadmap",
+          "group": "must-escalate",
+          "prompt": "help me plan my next project",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.016291999999999973,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-3",
+          "group": "safe-hit",
+          "prompt": "search developer docs for D1 migrations",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.014583999999999264,
+          "correct": false
+        },
+        {
+          "id": "sensitive-wiki",
+          "group": "must-escalate",
+          "prompt": "summarize this internal wiki page",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0005830000000006663,
+          "correct": true
+        },
+        {
+          "id": "write-commit",
+          "group": "must-escalate",
+          "prompt": "commit and push these changes",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0009580000000006805,
+          "correct": true
+        },
+        {
+          "id": "sensitive-token",
+          "group": "must-escalate",
+          "prompt": "inspect a customer token from our private repo",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0006249999999994316,
+          "correct": true
+        },
+        {
+          "id": "unknown-summary",
+          "group": "must-escalate",
+          "prompt": "summarize whatever I should know",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013791999999998694,
+          "correct": true
+        },
+        {
+          "id": "sensitive-secret",
+          "group": "must-escalate",
+          "prompt": "search for an api secret",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.00058299999999889,
+          "correct": true
+        },
+        {
+          "id": "test-exact",
+          "group": "safe-hit",
+          "prompt": "summarize this test failure",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.013583000000000567,
+          "correct": true
+        },
+        {
+          "id": "git-status-exact",
+          "group": "safe-hit",
+          "prompt": "summarize my git status",
+          "expected": "git-status-summary",
+          "route": "recipe_hit",
+          "recipeId": "git-status-summary",
+          "latencyMs": 0.010958000000000467,
+          "correct": true
+        },
+        {
+          "id": "write-refactor",
+          "group": "must-escalate",
+          "prompt": "refactor the authentication architecture",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011250000000000426,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant",
+          "group": "safe-hit",
+          "prompt": "what changed locally?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0020839999999999748,
+          "correct": false
+        },
+        {
+          "id": "novel-debug",
+          "group": "must-escalate",
+          "prompt": "why is this new distributed failure happening?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0167079999999995,
+          "correct": true
+        },
+        {
+          "id": "security",
+          "group": "must-escalate",
+          "prompt": "perform a security review",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012500000000006395,
+          "correct": true
+        },
+        {
+          "id": "unknown-weather",
+          "group": "must-escalate",
+          "prompt": "what is the weather today",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.014750000000001151,
+          "correct": true
+        },
+        {
+          "id": "test-variant-4",
+          "group": "safe-hit",
+          "prompt": "read this pasted public build failure and list failed tests",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.018207999999999558,
+          "correct": false
+        },
+        {
+          "id": "novel-product",
+          "group": "must-escalate",
+          "prompt": "decide the right product strategy",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0014579999999995152,
+          "correct": true
+        },
+        {
+          "id": "sensitive-customer",
+          "group": "must-escalate",
+          "prompt": "summarize a customer incident record",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0006249999999994316,
+          "correct": true
+        },
+        {
+          "id": "external-release",
+          "group": "must-escalate",
+          "prompt": "publish this release",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013708000000001164,
+          "correct": true
+        },
+        {
+          "id": "test-variant-3",
+          "group": "safe-hit",
+          "prompt": "condense this dummy unit test report",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.01437499999999936,
+          "correct": false
+        },
+        {
+          "id": "write-fix",
+          "group": "must-escalate",
+          "prompt": "fix the login bug",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012089999999993495,
+          "correct": true
+        },
+        {
+          "id": "test-variant",
+          "group": "safe-hit",
+          "prompt": "summarize failing tests",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.011916000000001148,
+          "correct": true
+        },
+        {
+          "id": "sensitive-private-code",
+          "group": "must-escalate",
+          "prompt": "review non-public source code from our private repository",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0008330000000000837,
+          "correct": true
+        },
+        {
+          "id": "external-merge",
+          "group": "must-escalate",
+          "prompt": "merge this pull request",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.001084000000000529,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-3",
+          "group": "safe-hit",
+          "prompt": "give me a summary of repository status",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.016542000000001167,
+          "correct": false
+        },
+        {
+          "id": "architecture",
+          "group": "must-escalate",
+          "prompt": "design an architecture for my agent",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0013330000000006947,
+          "correct": true
+        },
+        {
+          "id": "test-variant-2",
+          "group": "safe-hit",
+          "prompt": "which failures matter in these public test logs?",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.017750000000001265,
+          "correct": false
+        },
+        {
+          "id": "docs-exact",
+          "group": "safe-hit",
+          "prompt": "find public docs",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.012957999999999359,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-5",
+          "group": "safe-hit",
+          "prompt": "show changed files without editing anything",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0013330000000006947,
+          "correct": false
+        },
+        {
+          "id": "external-email",
+          "group": "must-escalate",
+          "prompt": "send a message to the maintainer",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012080000000000979,
+          "correct": true
+        },
+        {
+          "id": "sensitive-pii",
+          "group": "must-escalate",
+          "prompt": "analyze personal data in this support export",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007500000000000284,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-4",
+          "group": "safe-hit",
+          "prompt": "are there local changes in this public repo?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.001292000000001181,
+          "correct": false
+        },
+        {
+          "id": "write-create",
+          "group": "must-escalate",
+          "prompt": "create a new API endpoint",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011670000000005842,
+          "correct": true
+        },
+        {
+          "id": "write-deploy",
+          "group": "must-escalate",
+          "prompt": "deploy this worker",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011250000000000426,
+          "correct": true
+        },
+        {
+          "id": "docs-workers",
+          "group": "safe-hit",
+          "prompt": "look up workers documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.013499999999998735,
+          "correct": true
+        },
+        {
+          "id": "unknown-investigate",
+          "group": "must-escalate",
+          "prompt": "investigate a problem",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013832999999999984,
+          "correct": true
+        },
+        {
+          "id": "external-comment",
+          "group": "must-escalate",
+          "prompt": "post a comment on this issue",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.001082999999999501,
+          "correct": true
+        },
+        {
+          "id": "security-auth",
+          "group": "must-escalate",
+          "prompt": "is this authentication design secure?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012089999999993495,
+          "correct": true
+        },
+        {
+          "id": "unknown-explain",
+          "group": "must-escalate",
+          "prompt": "explain this unfamiliar function",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.014916999999998737,
+          "correct": true
+        },
+        {
+          "id": "docs-cf",
+          "group": "safe-hit",
+          "prompt": "find cloudflare developer documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.0119170000000004,
+          "correct": true
+        },
+        {
+          "id": "unknown-question",
+          "group": "must-escalate",
+          "prompt": "answer my question",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.018917000000000073,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-2",
+          "group": "safe-hit",
+          "prompt": "do i have uncommitted files?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0013339999999999463,
+          "correct": false
+        },
+        {
+          "id": "docs-variant-4",
+          "group": "safe-hit",
+          "prompt": "point me to the public Cloudflare API reference",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.018041999999999447,
+          "correct": false
+        },
+        {
+          "id": "docs-variant-2",
+          "group": "safe-hit",
+          "prompt": "locate public documentation for Workers AI",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.016084000000001097,
+          "correct": false
+        },
+        {
+          "id": "novel-review",
+          "group": "must-escalate",
+          "prompt": "review whether this implementation is correct",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0013339999999999463,
+          "correct": true
+        },
+        {
+          "id": "novel-product",
+          "group": "must-escalate",
+          "prompt": "decide the right product strategy",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011669999999988079,
+          "correct": true
+        },
+        {
+          "id": "sensitive-customer",
+          "group": "must-escalate",
+          "prompt": "summarize a customer incident record",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007090000000005148,
+          "correct": true
+        },
+        {
+          "id": "docs-workers",
+          "group": "safe-hit",
+          "prompt": "look up workers documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.013125000000000497,
+          "correct": true
+        },
+        {
+          "id": "sensitive-private-code",
+          "group": "must-escalate",
+          "prompt": "review non-public source code from our private repository",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007079999999994868,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-3",
+          "group": "safe-hit",
+          "prompt": "search developer docs for D1 migrations",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.013583999999999818,
+          "correct": false
+        },
+        {
+          "id": "test-variant-3",
+          "group": "safe-hit",
+          "prompt": "condense this dummy unit test report",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.01379200000000047,
+          "correct": false
+        },
+        {
+          "id": "test-variant-2",
+          "group": "safe-hit",
+          "prompt": "which failures matter in these public test logs?",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.01745799999999953,
+          "correct": false
+        },
+        {
+          "id": "security-auth",
+          "group": "must-escalate",
+          "prompt": "is this authentication design secure?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011670000000005842,
+          "correct": true
+        },
+        {
+          "id": "unknown-roadmap",
+          "group": "must-escalate",
+          "prompt": "help me plan my next project",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.014083000000001178,
+          "correct": true
+        },
+        {
+          "id": "write-commit",
+          "group": "must-escalate",
+          "prompt": "commit and push these changes",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012919999999994047,
+          "correct": true
+        },
+        {
+          "id": "security",
+          "group": "must-escalate",
+          "prompt": "perform a security review",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0010419999999999874,
+          "correct": true
+        },
+        {
+          "id": "architecture",
+          "group": "must-escalate",
+          "prompt": "design an architecture for my agent",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0012499999999988631,
+          "correct": true
+        },
+        {
+          "id": "novel-debug",
+          "group": "must-escalate",
+          "prompt": "why is this new distributed failure happening?",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.016166000000000125,
+          "correct": true
+        },
+        {
+          "id": "unknown-investigate",
+          "group": "must-escalate",
+          "prompt": "investigate a problem",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.011082999999999288,
+          "correct": true
+        },
+        {
+          "id": "test-variant-4",
+          "group": "safe-hit",
+          "prompt": "read this pasted public build failure and list failed tests",
+          "expected": "test-failure-summary",
+          "route": "escalate",
+          "latencyMs": 0.017875000000000085,
+          "correct": false
+        },
+        {
+          "id": "write-create",
+          "group": "must-escalate",
+          "prompt": "create a new API endpoint",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0009589999999999321,
+          "correct": true
+        },
+        {
+          "id": "git-status-exact",
+          "group": "safe-hit",
+          "prompt": "summarize my git status",
+          "expected": "git-status-summary",
+          "route": "recipe_hit",
+          "recipeId": "git-status-summary",
+          "latencyMs": 0.012000000000000455,
+          "correct": true
+        },
+        {
+          "id": "docs-variant-2",
+          "group": "safe-hit",
+          "prompt": "locate public documentation for Workers AI",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.015541999999999945,
+          "correct": false
+        },
+        {
+          "id": "external-release",
+          "group": "must-escalate",
+          "prompt": "publish this release",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.010334000000000287,
+          "correct": true
+        },
+        {
+          "id": "sensitive-wiki",
+          "group": "must-escalate",
+          "prompt": "summarize this internal wiki page",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007090000000005148,
+          "correct": true
+        },
+        {
+          "id": "unknown-explain",
+          "group": "must-escalate",
+          "prompt": "explain this unfamiliar function",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.011832999999999316,
+          "correct": true
+        },
+        {
+          "id": "write-fix",
+          "group": "must-escalate",
+          "prompt": "fix the login bug",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011250000000000426,
+          "correct": true
+        },
+        {
+          "id": "external-email",
+          "group": "must-escalate",
+          "prompt": "send a message to the maintainer",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0010409999999989594,
+          "correct": true
+        },
+        {
+          "id": "test-public-ci",
+          "group": "safe-hit",
+          "prompt": "explain this public ci output",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.012208000000001107,
+          "correct": true
+        },
+        {
+          "id": "docs-exact",
+          "group": "safe-hit",
+          "prompt": "find public docs",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.017082999999999515,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-5",
+          "group": "safe-hit",
+          "prompt": "show changed files without editing anything",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0012500000000006395,
+          "correct": false
+        },
+        {
+          "id": "sensitive-token",
+          "group": "must-escalate",
+          "prompt": "inspect a customer token from our private repo",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0007500000000000284,
+          "correct": true
+        },
+        {
+          "id": "write-refactor",
+          "group": "must-escalate",
+          "prompt": "refactor the authentication architecture",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0011669999999988079,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-4",
+          "group": "safe-hit",
+          "prompt": "are there local changes in this public repo?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0011669999999988079,
+          "correct": false
+        },
+        {
+          "id": "docs-cf",
+          "group": "safe-hit",
+          "prompt": "find cloudflare developer documentation",
+          "expected": "public-docs-lookup",
+          "route": "recipe_hit",
+          "recipeId": "public-docs-lookup",
+          "latencyMs": 0.011957999999999913,
+          "correct": true
+        },
+        {
+          "id": "write-deploy",
+          "group": "must-escalate",
+          "prompt": "deploy this worker",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0023330000000001405,
+          "correct": true
+        },
+        {
+          "id": "external-comment",
+          "group": "must-escalate",
+          "prompt": "post a comment on this issue",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0018340000000005574,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant",
+          "group": "safe-hit",
+          "prompt": "what changed locally?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0012500000000006395,
+          "correct": false
+        },
+        {
+          "id": "novel-review",
+          "group": "must-escalate",
+          "prompt": "review whether this implementation is correct",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.001082999999999501,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-3",
+          "group": "safe-hit",
+          "prompt": "give me a summary of repository status",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.014749999999999375,
+          "correct": false
+        },
+        {
+          "id": "docs-variant-4",
+          "group": "safe-hit",
+          "prompt": "point me to the public Cloudflare API reference",
+          "expected": "public-docs-lookup",
+          "route": "escalate",
+          "latencyMs": 0.02116599999999913,
+          "correct": false
+        },
+        {
+          "id": "external-merge",
+          "group": "must-escalate",
+          "prompt": "merge this pull request",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0010419999999999874,
+          "correct": true
+        },
+        {
+          "id": "sensitive-secret",
+          "group": "must-escalate",
+          "prompt": "search for an api secret",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0005839999999999179,
+          "correct": true
+        },
+        {
+          "id": "unknown-summary",
+          "group": "must-escalate",
+          "prompt": "summarize whatever I should know",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.013999999999999346,
+          "correct": true
+        },
+        {
+          "id": "unknown-weather",
+          "group": "must-escalate",
+          "prompt": "what is the weather today",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.012541999999999831,
+          "correct": true
+        },
+        {
+          "id": "sensitive-pii",
+          "group": "must-escalate",
+          "prompt": "analyze personal data in this support export",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.0006659999999989452,
+          "correct": true
+        },
+        {
+          "id": "write-migration",
+          "group": "must-escalate",
+          "prompt": "apply the database migration",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.012124999999999275,
+          "correct": true
+        },
+        {
+          "id": "git-status-variant-2",
+          "group": "safe-hit",
+          "prompt": "do i have uncommitted files?",
+          "expected": "git-status-summary",
+          "route": "escalate",
+          "latencyMs": 0.0011250000000000426,
+          "correct": false
+        },
+        {
+          "id": "test-variant",
+          "group": "safe-hit",
+          "prompt": "summarize failing tests",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.011666999999999206,
+          "correct": true
+        },
+        {
+          "id": "test-exact",
+          "group": "safe-hit",
+          "prompt": "summarize this test failure",
+          "expected": "test-failure-summary",
+          "route": "recipe_hit",
+          "recipeId": "test-failure-summary",
+          "latencyMs": 0.011291999999999192,
+          "correct": true
+        },
+        {
+          "id": "unknown-question",
+          "group": "must-escalate",
+          "prompt": "answer my question",
+          "expected": "escalate",
+          "route": "escalate",
+          "latencyMs": 0.009875000000000966,
+          "correct": true
+        }
+      ]
+    }
+  ]
+}
