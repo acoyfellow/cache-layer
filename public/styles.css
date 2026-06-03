@@ -1,10 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400..700&family=Google+Sans+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400..700&family=Google+Sans+Mono:wght@400;500;600&family=Yellowtail&display=swap");
 
 :root {
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --primary-soft: #eff6ff;
   --secondary: #8b5cf6;
+  --vice-pink: #ec4899;
+  --vice-cyan: #06b6d4;
+  --vice-ink: #4c1d95;
   --success: #16a34a;
   --success-soft: #f0fdf4;
   --warning: #d97706;
@@ -82,18 +85,31 @@ nav a:hover { color: var(--text); }
 
 main { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-3) var(--space-10); }
 .hero { padding: 88px 0 var(--space-8); max-width: 864px; }
-.eyebrow, .tag {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: 999px;
-  color: var(--primary-hover);
-  background: var(--primary-soft);
-  font: 600 12px "Google Sans Flex", sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.eyebrow, .tag, .section-label {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 var(--space-2);
+  padding: 0 2px 9px;
+  color: var(--vice-pink);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font: 400 clamp(27px, 2.9vw, 34px) "Yellowtail", cursive;
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-transform: none;
 }
+.eyebrow::after, .tag::after, .section-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: min(100%, 104px);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--vice-pink), var(--vice-cyan));
+}
+.tag { color: var(--vice-pink); font-size: clamp(27px, 2.9vw, 34px); }
 h1 {
   margin: var(--space-3) 0 var(--space-3);
   max-width: 840px;
@@ -236,16 +252,29 @@ td code { font-family: "Google Sans Mono", ui-monospace, monospace; font-size: 1
 .benchmark-callout strong { color: var(--warning); }
 .benchmark-footnote { margin: var(--space-2) 0 0; color: var(--text-soft); font-size: 13px; }
 .benchmark-footnote a { color: var(--primary-hover); font-weight: 500; }
-.proof-evidence { margin-bottom: var(--space-10); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--primary-soft); border: 1px solid #dbeafe; }
-.proof-evidence h2 { margin: 0 0 var(--space-1); font-family: "Google Sans Flex", sans-serif; font-size: 32px; font-weight: 500; letter-spacing: -.05em; }
-.proof-evidence > div > p:last-child { margin: 0 0 var(--space-3); max-width: 700px; color: var(--text-muted); }
-.proof-evidence code, .proof-evidence dd { font-family: "Google Sans Mono", ui-monospace, monospace; }
-.proof-evidence dl { margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-1); }
-.proof-evidence dl div { padding: var(--space-2); background: var(--surface); border: 1px solid #dbeafe; border-radius: var(--radius-sm); }
-.proof-evidence dt { margin-bottom: 6px; color: var(--text-soft); font-size: 12px; }
-.proof-evidence dd { margin: 0; color: var(--text); font-size: 14px; }
+.code-proof { margin-bottom: var(--space-10); }
+.code-proof .benchmark-head { margin-bottom: var(--space-3); }
+.code-proof .benchmark-note code { font-family: "Google Sans Mono", ui-monospace, monospace; color: var(--text); }
+.code-window { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: #111827; box-shadow: var(--shadow-md); }
+.code-window-head { display: flex; align-items: center; gap: 7px; height: 48px; padding: 0 var(--space-2); border-bottom: 1px solid #273449; color: #9ca3af; }
+.code-window-head span { height: 10px; width: 10px; border-radius: 50%; background: #4b5563; }
+.code-window-head span:first-child { background: #f87171; }
+.code-window-head span:nth-child(2) { background: #fbbf24; }
+.code-window-head span:nth-child(3) { background: #34d399; }
+.code-window-head p { margin: 0 0 0 var(--space-1); font: 13px "Google Sans Mono", ui-monospace, monospace; }
+.code-window pre, .terminal-proof pre { overflow-x: auto; margin: 0; padding: var(--space-3); color: #e5e7eb; font: 15px/1.8 "Google Sans Mono", ui-monospace, monospace; }
+.code-window .kw { color: #93c5fd; }
+.code-window .fn { color: #c4b5fd; }
+.code-window .str { color: #86efac; }
+.code-window .bool { color: #fbbf24; }
+.code-window .comment { color: #9ca3af; }
+.terminal-proof { margin-top: var(--space-2); overflow: hidden; border: 1px solid #dbeafe; border-radius: var(--radius-md); background: var(--primary-soft); }
+.terminal-label { margin: 0; padding: 12px var(--space-3) 0; color: var(--text-soft); font-size: 13px; font-weight: 500; }
+.terminal-proof pre { color: var(--text); padding-top: var(--space-1); }
+.terminal-proof .prompt { color: var(--text-soft); }
+.terminal-proof .success { color: var(--success); font-weight: 600; }
+.terminal-proof .mono { color: var(--primary-hover); }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; margin-bottom: var(--space-10); }
-.section-label { color: var(--primary-hover); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 var(--space-2); }
 .split h2, .safety h2 { margin: 0 0 var(--space-2); font-family: "Google Sans Flex", sans-serif; font-weight: 500; font-size: 32px; line-height: 1.3; letter-spacing: -0.05em; }
 .split-copy > p:last-child { margin: 0; color: var(--text-muted); }
 .diagram { margin: 0; padding: var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-muted); font: 15px/2 "Google Sans Mono", monospace; }
@@ -282,8 +311,7 @@ footer { border-top: 1px solid var(--border); padding: var(--space-4) var(--spac
   .benchmark { padding: var(--space-2); }
   .benchmark-head { display: block; }
   .benchmark-note { margin-top: var(--space-2); text-align: left; }
-  .proof-evidence { padding: var(--space-2); }
-  .proof-evidence dl { grid-template-columns: 1fr; }
+  .code-window pre, .terminal-proof pre { font-size: 13px; padding: var(--space-2); }
   .ask { border-right: 0; border-bottom: 1px solid var(--border); }
   .split { gap: var(--space-3); }
 }

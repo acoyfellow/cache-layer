@@ -12,7 +12,7 @@
       <header class="nav">
         <a class="mark" href="/" aria-label="cache-layer home"><span class="mark-dot"></span>cache-layer</a>
         <nav aria-label="Primary navigation">
-          <a href="#demo">Demo</a>
+          <a href="#proof">Proof</a>
           <a href="#architecture">Architecture</a>
           <a href="#safety">Safety</a>
           <a class="nav-github" href="https://github.com/acoyfellow/cache-layer" rel="noreferrer">GitHub</a>
@@ -25,7 +25,7 @@
         <h1>A cache layer for<br /><span>repeated agent work.</span></h1>
         <p class="lede">Verified recipes handle bounded, read-only tasks. Work that needs judgment, private context, or side effects escalates clearly.</p>
         <div class="actions">
-          <a class="primary" href="#demo">Try the demo</a>
+          <a class="primary" href="#proof">See the proof</a>
           <a class="secondary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/cache-layer">Deploy to Cloudflare</a>
         </div>
       </section>
@@ -36,34 +36,34 @@
         <article><strong>Conservative</strong><p>Unclear requests escalate by default.</p></article>
       </section>
 
-      <section id="demo" class="demo" aria-label="Interactive routing demo">
-        <div class="demo-head">
-          <h2>Route a task</h2>
-          <p>Public-data-only demonstration</p>
-        </div>
-        <div class="demo-grid">
-          <div class="ask">
-            <label class="field-label" for="prompt">Describe an agent task</label>
-            <textarea id="prompt" rows="4">summarize my git status</textarea>
-            <div class="samples" aria-label="Example tasks">
-              <button type="button" data-prompt="summarize my git status">Recipe hit</button>
-              <button type="button" data-prompt="summarize this test failure from public CI output">Public summary</button>
-              <button type="button" data-prompt="refactor the authentication architecture">Escalate</button>
-              <button type="button" data-prompt="inspect a customer token from our private repo">Private data</button>
-            </div>
-            <button id="route" class="run" type="button">Route task</button>
+      <section id="proof" class="code-proof" aria-label="Executable pi extension proof">
+        <div class="benchmark-head">
+          <div>
+            <p class="section-label">Real pi proof</p>
+            <h2>The whole local hit.</h2>
           </div>
-          <div id="result" class="result" aria-live="polite">
-            <div class="result-top">
-              <p class="decision-label">Decision</p>
-              <span id="badge" class="badge waiting">Ready</span>
-            </div>
-            <p id="proof-step" class="proof-step"></p>
-            <h3 id="title">Choose a task to trace its route.</h3>
-            <p id="reason" class="reason">Only approved, read-only public-data workflows can become a recipe hit.</p>
-            <div id="evidence" class="evidence"></div>
-          </div>
+          <p class="benchmark-note">Implemented in <code>extensions/cache-layer/index.ts</code> · reproduced with <code>bun run bench:pi</code></p>
         </div>
+        <div class="code-window" role="img" aria-label="Code snippet showing pi intercepting input and executing a public read-only recipe">
+          <div class="code-window-head"><span></span><span></span><span></span><p>extensions/cache-layer/index.ts</p></div>
+          <pre><code><span class="kw">pi</span>.<span class="fn">on</span>(<span class="str">"input"</span>, <span class="kw">async</span> (event, ctx) =&gt; {
+  <span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">executePublicRecipe</span>(event.text, ctx.cwd);
+  <span class="kw">if</span> (!result.handled) <span class="kw">return</span> { action: <span class="str">"continue"</span> }; <span class="comment">// frontier fallback</span>
+
+  pi.<span class="fn">sendMessage</span>({ content: result.execution.answer, display: <span class="bool">true</span> });
+  <span class="kw">return</span> { action: <span class="str">"handled"</span> }; <span class="comment">// no frontier turn</span>
+});</code></pre>
+        </div>
+        <div class="terminal-proof">
+          <p class="terminal-label">Measured run</p>
+          <pre><code><span class="prompt">$</span> bun run bench:pi
+<span class="success">RECIPE HIT</span> · git-status-summary · no frontier turn
+On main: changed files summarized via <span class="mono">git status --short --branch</span>
+
+frontier assistant messages  <span class="success">0</span>
+local elapsed               305.3 ms</code></pre>
+        </div>
+        <p class="benchmark-footnote">This proves one implemented local avoidance path against this public repository. It does not yet claim workload-level token savings. <a href="https://github.com/acoyfellow/cache-layer/blob/main/benchmarks/results/pi-extension-public-repo.json">Raw proof →</a></p>
       </section>
 
       <section class="benchmark" aria-label="Local routing benchmark">
@@ -86,21 +86,6 @@
         </div>
         <p class="benchmark-callout"><strong>Finding:</strong> the useful local router also made unsafe choices. Deterministic policy must remain in front of model routing.</p>
         <p class="benchmark-footnote">Routing classification only — not a coding-quality or token-savings claim. <a href="https://github.com/acoyfellow/cache-layer/blob/main/docs/benchmarks.md">Method, failures, and raw results →</a></p>
-      </section>
-
-      <section class="proof-evidence" aria-label="Pi extension evidence">
-        <div>
-          <p class="section-label">Real pi proof</p>
-          <h2>One actual local turn avoided.</h2>
-          <p>A real pi AgentSession ran the read-only <code>git-status-summary</code> recipe against this public repo and completed without generating an assistant/frontier-model message.</p>
-        </div>
-        <dl>
-          <div><dt>Prompt</dt><dd>summarize my git status</dd></div>
-          <div><dt>Recipe</dt><dd>git-status-summary</dd></div>
-          <div><dt>Frontier messages</dt><dd class="safe">0</dd></div>
-          <div><dt>Local elapsed</dt><dd>305.3 ms</dd></div>
-        </dl>
-        <p class="benchmark-footnote">Narrow execution proof, not a workload-level savings claim. <a href="https://github.com/acoyfellow/cache-layer/blob/main/benchmarks/results/pi-extension-public-repo.json">Raw proof →</a></p>
       </section>
 
       <section id="architecture" class="split">
@@ -129,6 +114,5 @@ Worker ─── policy gate
       </section>
     </main>
     <footer>MIT · 0.0.1 · Frontier models for novelty. Verified recipes for repetition.</footer>
-    <script type="module" src="/app.js"></script>
   </body>
 </html>
