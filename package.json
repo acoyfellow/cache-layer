@@ -1,0 +1,26 @@
+{
+  "name": "cache-layer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Verified recipe routing for AI agents on Cloudflare.",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8791",
+    "check": "tsc --noEmit",
+    "test": "bun test",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "smoke": "bun scripts/smoke.ts",
+    "verify": "bun run check && bun run test && bun run build",
+    "record": "bun scripts/record-demo.ts",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260525.0",
+    "@types/bun": "latest",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.82.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

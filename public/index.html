@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cache-layer · verified repetition for AI agents</title>
+    <meta name="description" content="Verified recipe routing for AI agents on Cloudflare. Repetition runs through safe recipes; novel work escalates." />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="mark" href="/" aria-label="cache-layer home"><span class="pulse"></span>cache-layer</a>
+      <nav>
+        <a href="#architecture">Architecture</a>
+        <a href="#safety">Safety</a>
+        <a href="https://github.com/acoyfellow/cache-layer" rel="noreferrer">GitHub</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="tag">0.0.1 · OSS EXPLORATION</div>
+        <h1>Give agents a cache<br />for <span>repetition.</span></h1>
+        <p class="lede">Verified recipes handle routine agent work. New judgment escalates instead of pretending. Built on Cloudflare Workers and Workers AI.</p>
+        <div class="actions">
+          <a class="primary" href="#demo">Try the router</a>
+          <a class="deploy" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/cache-layer">Deploy to Cloudflare</a>
+        </div>
+      </section>
+
+      <section id="demo" class="console" aria-label="Interactive routing demo">
+        <div class="console-header"><span></span><span></span><span></span><p>routing console · public-data-only demo</p></div>
+        <div class="console-grid">
+          <div class="ask">
+            <label for="prompt">Agent task</label>
+            <textarea id="prompt" rows="4">summarize my git status</textarea>
+            <div class="samples" aria-label="Example prompts">
+              <button data-prompt="summarize my git status">Safe hit</button>
+              <button data-prompt="summarize this test failure from public CI output">Read-only hit</button>
+              <button data-prompt="refactor the authentication architecture">Escalation</button>
+              <button data-prompt="inspect a customer token from our private repo">Sensitive</button>
+            </div>
+            <button id="route" class="run">Route task <span>→</span></button>
+          </div>
+          <div id="result" class="result" aria-live="polite">
+            <div class="result-top">
+              <p class="muted">DECISION</p>
+              <span id="badge" class="badge waiting">READY</span>
+            </div>
+            <p id="proof-step" class="proof-step"></p>
+            <h2 id="title">Choose a task to trace its route.</h2>
+            <p id="reason" class="reason">The demo routes only approved, read-only workflows over public or dummy data.</p>
+            <div id="evidence" class="evidence"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Promise">
+        <article><strong>Verified</strong><p>Recipes declare scope, risk, and proof.</p></article>
+        <article><strong>Visible</strong><p>Every hit or escalation explains itself.</p></article>
+        <article><strong>Honest</strong><p>No safe match means upstream reasoning.</p></article>
+      </section>
+
+      <section id="architecture" class="split">
+        <div>
+          <p class="eyebrow">ARCHITECTURE</p>
+          <h2>Prototype locally.<br />Deploy on Cloudflare.</h2>
+          <p>Local evaluation can use Ollama over public OSS data. The shareable deployment runs the router on Workers AI behind a Worker, with room for recipe persistence and observability as the experiment grows.</p>
+        </div>
+        <pre class="diagram">request
+  │
+  ▼
+Worker ─── approved recipe index
+  │
+  ├── safe match ── Workers AI check ── recipe hit
+  │
+  └── no match / risky ──────────────── escalate</pre>
+      </section>
+
+      <section id="safety" class="safety">
+        <p class="eyebrow">SAFETY BOUNDARY</p>
+        <h2>Read-only first.</h2>
+        <div class="safety-grid">
+          <div class="allow"><h3>May route</h3><p>Public documentation lookup, public CI output summaries, repository status recipes.</p></div>
+          <div class="deny"><h3>Must escalate</h3><p>Edits, deployments, external writes, private context, customer or personal data, security judgment.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer>MIT · `0.0.1` · frontier models for novelty, verified recipes for repetition</footer>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

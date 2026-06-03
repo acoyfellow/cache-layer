@@ -1,0 +1,8 @@
+node_modules
+.wrangler
+dist
+.dev.vars
+.DS_Store
+recordings/*.webm
+recordings/*.mp4
+!recordings/cache-layer-local-proof.webm
