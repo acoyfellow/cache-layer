@@ -18,7 +18,7 @@ function showLoading() {
   clearInterval(proofTimer);
   routeButton.disabled = true;
   badge.className = "badge waiting";
-  badge.textContent = "ROUTING";
+  badge.textContent = "Routing";
   title.textContent = "Checking approved recipes…";
   reason.textContent = "Applying the public-data and read-only policy boundary.";
   evidence.innerHTML = "";
@@ -40,7 +40,7 @@ function render(data) {
   const isHit = data.route === "recipe_hit";
   proofStep.textContent = isHit ? "route complete · approved read-only path" : "route complete · escalation boundary enforced";
   badge.className = `badge ${isHit ? "hit" : "escalate"}`;
-  badge.textContent = isHit ? "RECIPE HIT" : "ESCALATE";
+  badge.textContent = isHit ? "Recipe hit" : "Escalate";
   title.textContent = isHit ? data.recipe.title : "Send this upstream.";
   reason.textContent = data.reason;
   evidence.className = `evidence ${isHit ? "" : "escalated"}`;
@@ -71,7 +71,7 @@ async function run() {
     clearInterval(proofTimer);
     proofStep.textContent = "route failed";
     badge.className = "badge escalate";
-    badge.textContent = "ERROR";
+    badge.textContent = "Error";
     title.textContent = "Router unavailable.";
     reason.textContent = error instanceof Error ? error.message : "Could not reach the router.";
     evidence.innerHTML = "";

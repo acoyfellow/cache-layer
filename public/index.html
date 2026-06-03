@@ -4,88 +4,94 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cache-layer · verified repetition for AI agents</title>
-    <meta name="description" content="Verified recipe routing for AI agents on Cloudflare. Repetition runs through safe recipes; novel work escalates." />
+    <meta name="description" content="Verified recipe routing for AI agents on Cloudflare. Repetition routes clearly; novel work escalates." />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <header class="nav">
-      <a class="mark" href="/" aria-label="cache-layer home"><span class="pulse"></span>cache-layer</a>
-      <nav>
-        <a href="#architecture">Architecture</a>
-        <a href="#safety">Safety</a>
-        <a href="https://github.com/acoyfellow/cache-layer" rel="noreferrer">GitHub</a>
-      </nav>
-    </header>
+    <div class="nav-wrap">
+      <header class="nav">
+        <a class="mark" href="/" aria-label="cache-layer home"><span class="mark-dot"></span>cache-layer</a>
+        <nav aria-label="Primary navigation">
+          <a href="#demo">Demo</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#safety">Safety</a>
+          <a class="nav-github" href="https://github.com/acoyfellow/cache-layer" rel="noreferrer">GitHub</a>
+        </nav>
+      </header>
+    </div>
     <main>
       <section class="hero">
-        <div class="tag">0.0.1 · OSS EXPLORATION</div>
-        <h1>Give agents a cache<br />for <span>repetition.</span></h1>
-        <p class="lede">Verified recipes handle routine agent work. New judgment escalates instead of pretending. Built on Cloudflare Workers and Workers AI.</p>
+        <p class="eyebrow">Open source · 0.0.1</p>
+        <h1>A cache layer for<br /><span>repeated agent work.</span></h1>
+        <p class="lede">Verified recipes handle bounded, read-only tasks. Work that needs judgment, private context, or side effects escalates clearly.</p>
         <div class="actions">
-          <a class="primary" href="#demo">Try the router</a>
-          <a class="deploy" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/cache-layer">Deploy to Cloudflare</a>
+          <a class="primary" href="#demo">Try the demo</a>
+          <a class="secondary" href="https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/cache-layer">Deploy to Cloudflare</a>
         </div>
       </section>
 
-      <section id="demo" class="console" aria-label="Interactive routing demo">
-        <div class="console-header"><span></span><span></span><span></span><p>routing console · public-data-only demo</p></div>
-        <div class="console-grid">
+      <section class="statement" aria-label="Design principles">
+        <article><strong>Verified</strong><p>Each recipe declares its risk and evidence.</p></article>
+        <article><strong>Visible</strong><p>Every routing decision explains itself.</p></article>
+        <article><strong>Conservative</strong><p>Unclear requests escalate by default.</p></article>
+      </section>
+
+      <section id="demo" class="demo" aria-label="Interactive routing demo">
+        <div class="demo-head">
+          <h2>Route a task</h2>
+          <p>Public-data-only demonstration</p>
+        </div>
+        <div class="demo-grid">
           <div class="ask">
-            <label for="prompt">Agent task</label>
+            <label class="field-label" for="prompt">Describe an agent task</label>
             <textarea id="prompt" rows="4">summarize my git status</textarea>
-            <div class="samples" aria-label="Example prompts">
-              <button data-prompt="summarize my git status">Safe hit</button>
-              <button data-prompt="summarize this test failure from public CI output">Read-only hit</button>
-              <button data-prompt="refactor the authentication architecture">Escalation</button>
-              <button data-prompt="inspect a customer token from our private repo">Sensitive</button>
+            <div class="samples" aria-label="Example tasks">
+              <button type="button" data-prompt="summarize my git status">Recipe hit</button>
+              <button type="button" data-prompt="summarize this test failure from public CI output">Public summary</button>
+              <button type="button" data-prompt="refactor the authentication architecture">Escalate</button>
+              <button type="button" data-prompt="inspect a customer token from our private repo">Private data</button>
             </div>
-            <button id="route" class="run">Route task <span>→</span></button>
+            <button id="route" class="run" type="button">Route task</button>
           </div>
           <div id="result" class="result" aria-live="polite">
             <div class="result-top">
-              <p class="muted">DECISION</p>
-              <span id="badge" class="badge waiting">READY</span>
+              <p class="decision-label">Decision</p>
+              <span id="badge" class="badge waiting">Ready</span>
             </div>
             <p id="proof-step" class="proof-step"></p>
-            <h2 id="title">Choose a task to trace its route.</h2>
-            <p id="reason" class="reason">The demo routes only approved, read-only workflows over public or dummy data.</p>
+            <h3 id="title">Choose a task to trace its route.</h3>
+            <p id="reason" class="reason">Only approved, read-only public-data workflows can become a recipe hit.</p>
             <div id="evidence" class="evidence"></div>
           </div>
         </div>
       </section>
 
-      <section class="metrics" aria-label="Promise">
-        <article><strong>Verified</strong><p>Recipes declare scope, risk, and proof.</p></article>
-        <article><strong>Visible</strong><p>Every hit or escalation explains itself.</p></article>
-        <article><strong>Honest</strong><p>No safe match means upstream reasoning.</p></article>
-      </section>
-
       <section id="architecture" class="split">
-        <div>
-          <p class="eyebrow">ARCHITECTURE</p>
-          <h2>Prototype locally.<br />Deploy on Cloudflare.</h2>
-          <p>Local evaluation can use Ollama over public OSS data. The shareable deployment runs the router on Workers AI behind a Worker, with room for recipe persistence and observability as the experiment grows.</p>
+        <div class="split-copy">
+          <p class="section-label">Architecture</p>
+          <h2>Prototype locally. Deploy on Cloudflare.</h2>
+          <p>The public deployment runs on a Cloudflare Worker with Workers AI available for conservative route confirmation. Local evaluation can use Ollama on public OSS or dummy data.</p>
         </div>
         <pre class="diagram">request
   │
   ▼
-Worker ─── approved recipe index
+Worker ─── policy gate
   │
-  ├── safe match ── Workers AI check ── recipe hit
+  ├── recipe candidate ── Workers AI check ── hit
   │
-  └── no match / risky ──────────────── escalate</pre>
+  └── risky / unmatched ─────────────── escalate</pre>
       </section>
 
       <section id="safety" class="safety">
-        <p class="eyebrow">SAFETY BOUNDARY</p>
+        <p class="section-label">Safety boundary</p>
         <h2>Read-only first.</h2>
         <div class="safety-grid">
-          <div class="allow"><h3>May route</h3><p>Public documentation lookup, public CI output summaries, repository status recipes.</p></div>
-          <div class="deny"><h3>Must escalate</h3><p>Edits, deployments, external writes, private context, customer or personal data, security judgment.</p></div>
+          <div class="allow"><h3>May route</h3><p>Public documentation, public test-output summaries, and bounded repository status workflows.</p></div>
+          <div class="deny"><h3>Must escalate</h3><p>Edits, deploys, comments, secrets, private code, customer data, and security judgment.</p></div>
         </div>
       </section>
     </main>
-    <footer>MIT · `0.0.1` · frontier models for novelty, verified recipes for repetition</footer>
+    <footer>MIT · 0.0.1 · Frontier models for novelty. Verified recipes for repetition.</footer>
     <script type="module" src="/app.js"></script>
   </body>
 </html>
