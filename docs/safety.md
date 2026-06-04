@@ -2,7 +2,7 @@
 
 `0.0.1` demonstrates routing; it does not execute arbitrary agent actions.
 
-## Allowed demo input
+## Allowed benchmark and local proof input
 
 - Public OSS context
 - Dummy fixtures
@@ -19,7 +19,7 @@
 
 ## Model rule
 
-Workers AI receives a candidate only after deterministic policy admits a read-only match. It may say `ESCALATE`; it cannot override the deterministic boundary to permit a risky request.
+The currently deployed proof site invokes no model and accepts no prompts. In a future hosted-verifier experiment, Workers AI may receive a candidate only after deterministic policy admits a read-only match; it must not override that boundary to permit a risky request.
 
 ## Local mode
 

@@ -9,22 +9,22 @@ const browser = await openLocalBrowser();
 let recording = false;
 try {
   await browser.goto(base);
-  await browser.wait({ selector: "#route", timeoutMs: 10_000 });
+  await browser.wait(800);
   await browser.startRecording(out);
   recording = true;
-  await browser.wait(900);
+  await browser.wait(1200);
 
   await browser.goto(`${base}/safe.html`);
   await browser.wait({ selector: ".badge.hit", timeoutMs: 10_000 });
-  await browser.wait(1400);
+  await browser.wait(1800);
 
   await browser.goto(`${base}/escalate.html`);
   await browser.wait({ selector: ".badge.escalate", timeoutMs: 10_000 });
-  await browser.wait(1500);
+  await browser.wait(1800);
 
   await browser.goto(`${base}/sensitive.html`);
   await browser.wait({ selector: ".badge.escalate", timeoutMs: 10_000 });
-  await browser.wait(1700);
+  await browser.wait(2000);
 } finally {
   if (recording) await browser.stopRecording();
   await browser.close();

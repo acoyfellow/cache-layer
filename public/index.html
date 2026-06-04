@@ -92,16 +92,18 @@ local elapsed               305.3 ms</code></pre>
         <div class="split-copy">
           <p class="section-label">Architecture</p>
           <h2>Prototype locally. Deploy on Cloudflare.</h2>
-          <p>The public deployment runs on a Cloudflare Worker with Workers AI available for conservative route confirmation. Local evaluation can use Ollama on public OSS or dummy data.</p>
+          <p>The public proof site runs on a Cloudflare Worker. The executable pi experiment runs locally; future hosted semantic verification can be added behind the same deterministic policy boundary.</p>
         </div>
         <pre class="diagram">request
   │
   ▼
-Worker ─── policy gate
+proof site ── Cloudflare Worker
+
+pi extension
   │
-  ├── recipe candidate ── Workers AI check ── hit
+  ├── authorized recipe ── local result
   │
-  └── risky / unmatched ─────────────── escalate</pre>
+  └── risky / unmatched ── frontier fallback</pre>
       </section>
 
       <section id="safety" class="safety">

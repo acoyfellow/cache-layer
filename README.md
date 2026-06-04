@@ -52,7 +52,7 @@ Measured locally on an Apple M4 Pro with Ollama. Local models ran three shuffled
 
 The evidence is useful precisely because it is not flattering: `qwen3-coder:30b` recovered intended hits, but also produced unsafe false hits on novel/unbounded requests. A local model therefore cannot be the safety boundary. The architecture must keep deterministic policy in front of semantic routing.
 
-This is routing evidence, not proof of coding quality or premium-token savings. See [`docs/benchmarks.md`](docs/benchmarks.md) for method, failure cases, raw results, and reproduction commands.
+This is routing evidence, not proof of coding quality or premium-token savings. See [`docs/benchmarks.md`](docs/benchmarks.md) for method, failure cases, raw results, and reproduction commands. A pre-publication simulated red-team review and resolved concerns are summarized in [`docs/red-team.md`](docs/red-team.md).
 
 ## Real pi extension proof
 
@@ -94,7 +94,6 @@ The app uses:
 | Primitive | Purpose |
 |---|---|
 | **Workers** | Public proof site and health endpoint |
-| **Workers AI** | Next hosted verifier experiment, behind deterministic policy |
 | **Observability** | Deployed Worker request visibility |
 
 The initial release intentionally avoids persistence, user repository access, and a hosted prompt box. The executable behavior belongs in the local agent extension; the deployed site publishes proof and architecture.
@@ -145,7 +144,7 @@ No prompt bodies are accepted or stored by the deployed proof site. The executab
 
 ## Local evaluation
 
-For fully local experimentation, use [Ollama](https://ollama.com/) and public OSS or dummy input only. The deployed proof site keeps Workers AI configured for the next Cloudflare-hosted semantic-verifier experiment behind deterministic policy; it does not expose a public prompt submission surface.
+For fully local experimentation, use [Ollama](https://ollama.com/) and public OSS or dummy input only. A future hosted semantic-verifier experiment may use Workers AI behind deterministic policy; it is not part of the deployed proof site and there is no public prompt submission surface.
 
 This repository does not claim that all model weights or third-party local runtimes are approved by any employer or organization. Confirm your own tool, model-license, and data-handling policies before using local inference for work.
 
