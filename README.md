@@ -2,6 +2,7 @@
 
 > Give AI agents a cache for repetition: verified recipes on Cloudflare, escalation for everything new.
 
+[![Live proof](https://img.shields.io/badge/live-cache--layer.coey.dev-3B82F6?style=for-the-badge)](https://cache-layer.coey.dev)
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/acoyfellow/cache-layer)
 [![MIT](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
 
